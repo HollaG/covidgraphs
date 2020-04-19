@@ -1,0 +1,86 @@
+body { 
+    margin: 0;
+    /* background-color: rgb(38, 42, 51);; */
+}
+
+.page-container { 
+    /* margin-top: 10px */
+}
+
+.container { 
+    text-align: center;
+}
+
+.temp { 
+    width: 70%;
+    height: 750px;
+    border: 1px solid black;
+    margin: auto
+}
+.chart { 
+    height: 800px;
+    display: none;
+    max-width: 100%;
+    margin: auto
+}
+
+#table1 { 
+    width: 60%;
+    margin: auto;
+    
+}
+
+#table1.sticky th { 
+    position: sticky;
+    top: 0;
+    background-color: white;
+    text-align: center;
+}
+@media screen and (max-width: 1000px) {
+    .chart { 
+        height: 45vw;
+        min-height: 300px;
+        max-width: 90%
+    }
+    #table1 { 
+        width: 90%;
+        margin: auto
+    }
+    button { 
+        height: 40px !important;
+        width: 400px !important;
+        
+        font-size: 1.5vw !important
+    }
+    .selector-wrapper { 
+        max-width: 100% !important;
+    }
+
+}
+@media screen and (max-width: 1500px) {
+    .chart { 
+        height: 45vw
+    }
+
+
+}
+
+button { 
+    height: 25px;
+    width: 400px;
+}
+
+#chart-container1 { 
+    display: block
+}
+
+.selector { 
+    
+    border-radius: 5px;
+    /* margin: 10px */
+}
+
+.selector-wrapper { 
+    
+    margin: auto
+}

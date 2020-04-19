@@ -1,0 +1,185 @@
+extends layout
+
+block content  
+    link(rel="stylesheet" href="/stylesheets/create.css")
+    script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
+    script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.js")
+    
+    link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
+    .page-container
+        .container
+            .text
+                h1 COVID-19 Visualisation (Singapore)
+                .back
+                    button(onclick="window.history.back()") Go back
+
+            .series-selector
+                h3 Select series to be compared
+                select(id="series-compare" multiple)
+                    optgroup(label="Dailies")
+                        option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                        option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                        option(value="New local community cases (per day)") New local community cases (per day)
+                        option(value="New local cases (per day)") New local cases (per day)
+                        option(value="New imported cases(per day)") New imported cases(per day)
+                        option(value="New cases (per day)") New cases (per day)
+                        option(value="Recovered (per day)") Recovered (per day)
+                        option(value="# ICU (on the day)") # ICU (on the day)
+                    optgroup(label="Totals")
+                        option(value="Total dormitory cases") Total dormitory cases
+                        option(value="Total work permit holder cases") Total work permit holder cases
+                        option(value="Total local community cases") Total local community cases
+                        option(value="Total local") Total local
+                        option(value="Total imported") Total imported
+                        option(value="Total cases") Total cases
+                        option(value="Total recovered") Total recovered
+                        option(value="# still in hospital") # still in hospital
+                    br
+                h3 Select graph options
+                select(id="graph-options" multiple)
+                    option(value="log") Enable logarithmic y-axis
+            .axis-selector
+                h3 y-axis: Case Numbers
+                h3 x-axis: Time
+
+            .button
+                button(onclick="generateChart()") Generate graph
+        .chart(id="chart")
+            #chart-container(class="chart")
+        .copy-text(id="hidden")
+            p Share this graph!
+            input(type=text id="link-url" readonly)
+            button(onclick="copy()" id="copy-button") Copy
+
+    
+    script.
+        var select = new SlimSelect({
+            select: "#series-compare",
+            limit: 5
+        })
+        var select2 = new SlimSelect({
+            select: "#graph-options"
+        })
+        var series = !{stringify(series)}
+
+        
+        if (series) { 
+            
+            var index = ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)", "New imported cases(per day)", "New cases (per day)", "Total dormitory cases", "Total work permit holder cases", "Total local community cases", "Total local", "Total imported", "Total cases	Recovered (per day)", "Total recovered", "# ICU (on the day)", "# still in hospital"]
+            var selectedSeries = []
+            var series = series.split("_")
+            
+            for (var i = 0; i < series.length; i++) { 
+                selectedSeries.push(index[series[i]])
+            }
+            generateChart(selectedSeries)
+        }
+        function generateChart(selectedSeries) { 
+            
+
+
+            //- var objDiv = document.getElementById("chart-container");
+            //- objDiv.scrollTop = objDiv.scrollHeight
+            var index = ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)", "New imported cases(per day)", "New cases (per day)", "Total dormitory cases", "Total work permit holder cases", "Total local community cases", "Total local", "Total imported", "Total cases	Recovered (per day)", "Total recovered", "# ICU (on the day)", "# still in hospital"]
+            
+            
+            
+            // Get selected series names
+            var selectedSeries = selectedSeries || select.selected() // ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)"]
+            if (!selectedSeries.length) return
+
+            var series = []
+            if (chart) chart.dispose()
+            for (var i = 0; i < selectedSeries.length; i++) { 
+                series.push(index.indexOf(selectedSeries[i]))
+            }
+
+
+            // Generate schema
+            var schema = [{
+                "name": "Time", // x
+                "type": "date",
+                "format": "%-d-%b-%y"
+            }, { 
+                "name": "Type",
+                "type": "string"
+            }, { 
+                "name": "Case Numbers",
+                "type": "number"
+            }]
+            
+
+            
+           
+
+            // Prepare data array
+            var data = []
+            
+            var rows = !{stringify(rows)}
+
+            for (var j = 0; j < rows.length; j++) { 
+                for (var k = 0; k < selectedSeries.length; k++) { 
+                    // For every series, add it to the data
+                    data.push([
+                        rows[j]["Date"],
+                        selectedSeries[k],
+                        rows[j][selectedSeries[k]]
+                    ])
+                }
+                
+            }
+            
+            // check if log selected
+            var isLog = select2.selected()
+
+            var caption = "User Generated Chart"
+            var dataStore = new FusionCharts.DataStore()
+            var dataSource = { 
+                chart: {
+                    exportEnabled: "1"
+                },
+                caption: {
+                    text: caption
+                },
+                series: "Type",
+                yAxis: [
+                    {
+                        plot: "Case Numbers",
+                        title: "Cases",
+                        type: isLog
+                    }
+                ]
+
+            }
+            dataSource.data = dataStore.createDataTable(data, schema)
+            var chart = new FusionCharts({
+                type: "timeseries",
+                renderAt: "chart-container",
+                width: "100%",
+                height: "100%",
+                dataSource: dataSource
+            }).render()
+
+            
+            var input = document.getElementById("link-url")
+            input.value = `https://sgcovidgraphs.xyz/create?series=${series.join("_")}`
+            
+            document.getElementById("hidden").style.display = "block"
+            document.getElementById('copy-button').innerHTML = "Copy"
+
+        }
+        function copy() {
+            /* Get the text field */
+            var copyText = document.getElementById("link-url");
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            /* Alert the copied text */
+            document.getElementById('copy-button').innerHTML = "Copied!"
+        }

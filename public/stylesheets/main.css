@@ -1,27 +1,16 @@
-body { 
-    margin: 0;
-    /* background-color: rgb(38, 42, 51);; */
-}
 
-.page-container { 
-    /* margin-top: 10px */
-}
+
 
 .container { 
     text-align: center;
 }
 
-.temp { 
-    width: 70%;
-    height: 750px;
-    border: 1px solid black;
-    margin: auto
-}
 .chart { 
-    height: 800px;
+    height: 760px;
     display: none;
     max-width: 100%;
-    margin: auto
+    margin: auto;
+    /* resize: vertical; */
 }
 
 #table1 { 

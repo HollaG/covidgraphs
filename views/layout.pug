@@ -1,8 +1,13 @@
 doctype html
 html
   head
-    title= title
+    title COVID-19 Visualised
     link(rel='stylesheet', href='/stylesheets/style.css')
-    //- meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="/stylesheets/mui.min.css")
+    //- meta(name="viewport")
   body
     block content
+    .footer
+      p Data supplied by <a href="https://www.moh.gov.sg/covid-19/situation-report"> MOH </a>
+      a(href="https://docs.google.com/spreadsheets/d/1RgZxXk-oD8xLlFRx3hcmiLaQpFoJJX6CfN0iI-Bc9H8/edit?usp=sharing") COVID-19 Google Sheet
+      p Marcus Soh 2020

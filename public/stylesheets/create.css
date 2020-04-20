@@ -30,13 +30,16 @@
     .chart { 
         height: 45vw;
         min-height: 300px;
-        max-width: 90%
+        max-width: 95%
     }   
     button { 
         height: 40px !important;
         width: 200px !important;
         
         font-size: 1.5vw !important
+    }
+    .container { 
+        max-width: 90%;
     }
 }
 @media screen and (max-width: 1500px) {
@@ -52,11 +55,13 @@
     margin:auto;
     text-align: center;
     margin-bottom: 50px;
+    
 }
 
 .copy-text input { 
     width: 100%;
     text-align: center;
+    margin-top: 5px
 }
 
 
@@ -75,4 +80,28 @@ button {
 
 .copy-text { 
     display: none
+}
+
+/* Advanced selection section */
+.advanced-series { 
+    width: 30%;
+    display: inline-block;
+    margin: 10px
+}
+
+.hide { 
+    display: none
+}
+
+
+
+.floating h3 { 
+    float: left
+}
+.floating button { 
+    float: right
+}
+
+.floating { 
+    overflow: hidden
 }

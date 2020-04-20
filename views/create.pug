@@ -15,38 +15,337 @@ block content
                     button(onclick="window.history.back()") Go back
 
             .series-selector
-                h3 Select series to be compared
-                select(id="series-compare" multiple)
-                    optgroup(label="Dailies")
-                        option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
-                        option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
-                        option(value="New local community cases (per day)") New local community cases (per day)
-                        option(value="New local cases (per day)") New local cases (per day)
-                        option(value="New imported cases(per day)") New imported cases(per day)
-                        option(value="New cases (per day)") New cases (per day)
-                        option(value="Recovered (per day)") Recovered (per day)
-                        option(value="# ICU (on the day)") # ICU (on the day)
-                    optgroup(label="Totals")
-                        option(value="Total dormitory cases") Total dormitory cases
-                        option(value="Total work permit holder cases") Total work permit holder cases
-                        option(value="Total local community cases") Total local community cases
-                        option(value="Total local") Total local
-                        option(value="Total imported") Total imported
-                        option(value="Total cases") Total cases
-                        option(value="Total recovered") Total recovered
-                        option(value="# still in hospital") # still in hospital
-                    br
+                .floating
+                    h3 Select series to be compared
+                    button(onclick='showAdv()' id="show-advanced-btn") Use advanced mode
+                .select-wrapper(id="select-hider")
+                    select(id="series-compare" multiple)
+                        option(data-placeholder="true")   
+                            optgroup(label="Dailies")
+                                option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                option(value="New local community cases (per day)") New local community cases (per day)
+                                option(value="New local cases (per day)") New local cases (per day)
+                                option(value="New imported cases(per day)") New imported cases(per day)
+                                option(value="New cases (per day)") New cases (per day)
+                                option(value="Recovered (per day)") Recovered (per day)
+                                option(value="# ICU (on the day)") # ICU (on the day)
+                            optgroup(label="Totals")
+                            option(value="Total dormitory cases") Total dormitory cases
+                            option(value="Total work permit holder cases") Total work permit holder cases
+                            option(value="Total local community cases") Total local community cases
+                            option(value="Total local") Total local
+                            option(value="Total imported") Total imported
+                            option(value="Total cases") Total cases
+                            option(value="Total recovered") Total recovered
+                            option(value="# still in hospital") # still in hospital
+                        br
+                
+                .advanced(id="show-advanced").hide
+                    .advanced-row-1
+                        .advanced-series
+                            h4 Series 1
+                            p.hide(id="series-1") placeholder
+                            .top
+                                select(id="advanced-select-top-1")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-1')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom
+                                select(id="advanced-select-bottom-1")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                        .advanced-series
+                            h4 Series 2
+                            p.hide(id="series-2") placeholder
+                            .top
+                                select(id="advanced-select-top-2")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-2')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom    
+                                select(id="advanced-select-bottom-2")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                        .advanced-series
+                            h4 Series 3
+                            p.hide(id="series-3") placeholder
+                            .top
+                                select(id="advanced-select-top-3")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-3')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom    
+                                select(id="advanced-select-bottom-3")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                    .advanced-row-2    
+                        .advanced-series
+                            h4 Series 4
+                            p.hide(id="series-4") placeholder
+                            .top
+                                select(id="advanced-select-top-4")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-4')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom    
+                                select(id="advanced-select-bottom-4")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital 
+                        .advanced-series
+                            h4 Series 5
+                            p.hide(id="series-5") placeholder
+                            .top
+                                select(id="advanced-select-top-5")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-5')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom    
+                                select(id="advanced-select-bottom-5")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital               
+                        .advanced-series
+                            h4 Series 6
+                            p.hide(id="series-6") placeholder
+                            .top
+                                select(id="advanced-select-top-6")      
+                                    option(data-placeholder="true")                                                
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital
+                            .operation
+                                select(id='advanced-select-operation-6')
+                                    option(data-placeholder="true")   
+                                    option(value='add') + (add)
+                                    option(value='subtract') - (subtract)
+                                    option(value='multiply') × (multiply)
+                                    option(value='divide') ÷ (divide)
+                            .bottom  
+                                select(id="advanced-select-bottom-6")   
+                                    option(data-placeholder="true")                                                   
+                                    option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                                    option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                                    option(value="New local community cases (per day)") New local community cases (per day)
+                                    option(value="New local cases (per day)") New local cases (per day)
+                                    option(value="New imported cases(per day)") New imported cases(per day)
+                                    option(value="New cases (per day)") New cases (per day)
+                                    option(value="Recovered (per day)") Recovered (per day)
+                                    option(value="# ICU (on the day)") # ICU (on the day)                    
+                                    option(value="Total dormitory cases") Total dormitory cases
+                                    option(value="Total work permit holder cases") Total work permit holder cases
+                                    option(value="Total local community cases") Total local community cases
+                                    option(value="Total local") Total local
+                                    option(value="Total imported") Total imported
+                                    option(value="Total cases") Total cases
+                                    option(value="Total recovered") Total recovered
+                                    option(value="# still in hospital") # still in hospital      
+                button(onclick="clearAll()") Clear all selection
                 h3 Select graph options
                 select(id="graph-options" multiple)
+                    option(data-placeholder="true")   
                     option(value="log") Enable logarithmic y-axis
+                
             .axis-selector
                 h3 y-axis: Case Numbers
                 h3 x-axis: Time
 
             .button
                 button(onclick="generateChart()") Generate graph
-        .chart(id="chart")
-            #chart-container(class="chart")
+        
+        #chart-container(class="chart")
         .copy-text(id="hidden")
             p Share this graph!
             input(type=text id="link-url" readonly)
@@ -56,10 +355,13 @@ block content
     script.
         var select = new SlimSelect({
             select: "#series-compare",
-            limit: 5
+            searchFocus: false,
+            placeholder: 'Select series...'
+            //- limit: 5
         })
         var select2 = new SlimSelect({
-            select: "#graph-options"
+            select: "#graph-options",
+            placeholder: 'Select options...'
         })
         var series = !{stringify(series)}
 
@@ -75,27 +377,234 @@ block content
             }
             generateChart(selectedSeries)
         }
-        function generateChart(selectedSeries) { 
-            
+        
+        function copy() {
+            /* Get the text field */
+            var copyText = document.getElementById("link-url");
 
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
-            //- var objDiv = document.getElementById("chart-container");
-            //- objDiv.scrollTop = objDiv.scrollHeight
-            var index = ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)", "New imported cases(per day)", "New cases (per day)", "Total dormitory cases", "Total work permit holder cases", "Total local community cases", "Total local", "Total imported", "Total cases", "Recovered (per day)", "Total recovered", "# ICU (on the day)", "# still in hospital"]
-            
-            
-            
-            // Get selected series names
-            var selectedSeries = selectedSeries || select.selected() // ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)"]
-            if (!selectedSeries.length) return
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
 
-            var series = []
-            if (chart) chart.dispose()
-            for (var i = 0; i < selectedSeries.length; i++) { 
-                series.push(index.indexOf(selectedSeries[i]))
+            /* Alert the copied text */
+            document.getElementById('copy-button').innerHTML = "Copied!"
+        }
+        // User clicks on advanced options
+        // - Action: Reveal advanced options       
+        
+        
+        
+        // User selects USER INPUT for both
+        // - Popup saying can only select user input once (OR disable)
+        // User clicks on Generate
+        // - Loop through advanced options. If input not empty, do math
+        // - Validate the user input
+        var isAdv = false
+        function showAdv() { 
+            if (!isAdv) { 
+                document.getElementById("show-advanced").style.display = "block"
+                document.getElementById("show-advanced-btn").innerHTML = "Use simple mode"
+                document.getElementById("select-hider").style.display = "none"
+                isAdv = true
+            } else { 
+                document.getElementById("show-advanced").style.display = "none"
+                document.getElementById("show-advanced-btn").innerHTML = "Use advanced mode"
+                isAdv = false
+                document.getElementById("select-hider").style.display = "block"
             }
+            
+            
+            
+        }
+        
+        function clearAll() {
+            advancedSelectTop1.set([])
+            advancedSelectOperation1.set([])
+            advancedSelectBottom1.set([])
+            advancedSelectTop2.set([])
+            advancedSelectOperation2.set([])
+            advancedSelectBottom2.set([])
+            advancedSelectTop3.set([])
+            advancedSelectOperation3.set([])
+            advancedSelectBottom3.set([])
+            advancedSelectTop4.set([])
+            advancedSelectOperation4.set([])
+            advancedSelectBottom4.set([])
+            advancedSelectTop5.set([])
+            advancedSelectOperation5.set([])
+            advancedSelectBottom5.set([])
+            advancedSelectTop6.set([])
+            advancedSelectOperation6.set([])
+            advancedSelectBottom6.set([])       
+            select.set([])
+        }        
+        var commonSelectOpts = { 
+            searchPlaceholder: 'Search, or enter a number to perform operations on',
+            placeholder: 'Select series or enter number...',
+            deselectLabel: '<span class="red">✖</span>',
+            addable: function (value) { 
+                if (!Number(value)) { // if NaN
+                    alert("Please only add a number!")
+                    return false
+                }
+                return value
+            }
+        }
+        
+        var advancedSelectTop1 = new SlimSelect({ 
+            select: "#advanced-select-top-1",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation1 = new SlimSelect({
+            select: "#advanced-select-operation-1", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom1 = new SlimSelect({
+            select: "#advanced-select-bottom-1",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectTop2 = new SlimSelect({ 
+            select: "#advanced-select-top-2",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation2 = new SlimSelect({
+            select: "#advanced-select-operation-2", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom2 = new SlimSelect({
+            select: "#advanced-select-bottom-2",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectTop3 = new SlimSelect({ 
+            select: "#advanced-select-top-3",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation3 = new SlimSelect({
+            select: "#advanced-select-operation-3", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom3 = new SlimSelect({
+            select: "#advanced-select-bottom-3",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectTop4 = new SlimSelect({ 
+            select: "#advanced-select-top-4",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation4 = new SlimSelect({
+            select: "#advanced-select-operation-4", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom4 = new SlimSelect({
+            select: "#advanced-select-bottom-4",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectTop5 = new SlimSelect({ 
+            select: "#advanced-select-top-5",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation5 = new SlimSelect({
+            select: "#advanced-select-operation-5", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom5 = new SlimSelect({
+            select: "#advanced-select-bottom-5",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectTop6 = new SlimSelect({ 
+            select: "#advanced-select-top-6",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectOperation6 = new SlimSelect({
+            select: "#advanced-select-operation-6", 
+            showSearch: false,
+            placeholder: "Select operation...",
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var advancedSelectBottom6 = new SlimSelect({
+            select: "#advanced-select-bottom-6",
+            searchPlaceholder: commonSelectOpts.searchPlaceholder,
+            placeholder: commonSelectOpts.placeholder,
+            addable: commonSelectOpts.addable,
+            deselectLabel: commonSelectOpts.deselectLabel
+        })
+        var slimSelectGrouping = [
+            [advancedSelectTop1, advancedSelectOperation1, advancedSelectBottom1],
+            [advancedSelectTop2, advancedSelectOperation2, advancedSelectBottom2],
+            [advancedSelectTop3, advancedSelectOperation3, advancedSelectBottom3],
+            [advancedSelectTop4, advancedSelectOperation4, advancedSelectBottom4],
+            [advancedSelectTop5, advancedSelectOperation5, advancedSelectBottom5],
+            [advancedSelectTop6, advancedSelectOperation6, advancedSelectBottom6],           
+        ]
 
-
+        // URL stuff
+        var index = ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)", "New imported cases(per day)", "New cases (per day)", "Total dormitory cases", "Total work permit holder cases", "Total local community cases", "Total local", "Total imported", "Total cases", "Recovered (per day)", "Total recovered", "# ICU (on the day)", "# still in hospital"]
+        var operators = {
+            "a": "add",
+            "s": "subtract",
+            "m": "multiply",
+            "d": "divide"
+        }
+        var operatorIndex = {
+                "add": "a",
+                "subtract": "s",
+                "multiply": "m",
+                "divide": "d"
+        }   
+        
+        function generateChart(selectedSeries) {
+            // stuff for URL generation 
+             
+            var URLArray = [] 
+            var URLString;
+            var rows = !{stringify(rows)}
+            var data = []
             // Generate schema
             var schema = [{
                 "name": "Time", // x
@@ -108,30 +617,201 @@ block content
                 "name": "Case Numbers",
                 "type": "number"
             }]
-            
 
-            
+
+            // FIRST CHECK IF ADVANCED MODE    
+                 
+            if (isAdv) { 
+                // is Advanced mode
+                // 1) Data validation: Iterate through all slimselects and check if they fufil this criteria
+                // a) If TOP select not filled, skip 
+                // b) If ALL select filled, save this data
+                // c) If TOP selected filled but BOTH operator and bottom select NOT FILLED, save this data
+                // d) Else, alert()
+                
+                
+                slimSelectGrouping.forEach(group => { 
+                    // a)
+                    if (!group[0].selected()) { // This is the first selection
+                        // If the first selection is EMPTY, SKIP
+                        URLArray.push("-1", "-1", "-1")
+                        return                        
+                    } 
+                    // from here on below, we know that the top selection is filled.
+                    // c) 
+                    if ((!group[1].selected() && group[2].selected()) || (group[1].selected() && !group[2].selected())) { // bottom 2 must either be BOTH FILLED or BOTH EMPTY
+                        URLArray.push("-1", "-1", "-1")                      
+                        return
+                    }
+
+                    
+                    //- if (Number(topSelection) && Number(bottomSelection)) { // if both top and bottom are numbers not possible to plot right lol
+                    //-     return
+                    //- }
+                    // From here, either i) only top is filled ii) all 3 are filled
+                   
+
+                    var topSelection = group[0].selected()
+                    var operatorSelection = group[1].selected() || "add"
+                    var bottomSelection = group[2].selected() || "none"
+
+                    URLArray.push(index.indexOf(topSelection), operatorIndex[operatorSelection], index.indexOf(bottomSelection)) 
+                    
+                    var operationDictionary = {
+                        add: "+",
+                        subtract: "-",
+                        multiply: "×",
+                        divide: "÷"
+                    }
+                
+                    for (var i = 0; i < rows.length; i++) { 
+                        // each row is rows[i]
+                        var value;
+                        if (bottomSelection != "none") {
+                            if (!isNaN(topSelection) && !isNaN(bottomSelection)) { 
+                                switch (operatorSelection) { 
+                                    case "add": 
+                                        value = Number(topSelection) + Number(bottomSelection)
+                                        break;
+                                    case "subtract":
+                                        value = Number(topSelection) - Number(bottomSelection)
+                                        break;
+                                    case "multiply": 
+                                        value = Number(topSelection) * Number(bottomSelection)
+                                        break;
+                                    case "divide":
+                                        value = Number(topSelection) / Number(bottomSelection)
+                                        break;
+                                }                                                
+                            } else if (!isNaN(topSelection) && isNaN(bottomSelection)) { 
+                                // top = number, bottom = data
+                                switch (operatorSelection) { 
+                                    case "add": 
+                                        value = Number(topSelection) + Number(rows[i][bottomSelection])
+                                        break;
+                                    case "subtract":
+                                        value = Number(topSelection) - Number(rows[i][bottomSelection])
+                                        break;
+                                    case "multiply": 
+                                        value = Number(topSelection) * Number(rows[i][bottomSelection])
+                                        break;
+                                    case "divide":
+                                        value = Number(topSelection) / Number(rows[i][bottomSelection])
+                                        break;
+                                }        
+                            } else if (isNaN(topSelection) && !isNaN(bottomSelection)) { 
+                                // top is data, bottom is number
+                                switch (operatorSelection) { 
+                                    case "add": 
+                                        value = Number(rows[i][topSelection]) + Number(bottomSelection)
+                                        break;
+                                    case "subtract":
+                                        value = Number(rows[i][topSelection]) - Number(bottomSelection)
+                                        break;
+                                    case "multiply": 
+                                        value = Number(rows[i][topSelection]) * Number(bottomSelection)
+                                        break;
+                                    case "divide":
+                                        value = Number(rows[i][topSelection]) / Number(bottomSelection)
+                                        break;
+                                }    
+                            } else { 
+                                // top and bottom are data
+                                switch (operatorSelection) { 
+                                        case "add": 
+                                            value = Number(rows[i][topSelection]) + Number(rows[i][bottomSelection])
+                                            break;
+                                        case "subtract":
+                                            value = Number(rows[i][topSelection]) - Number(rows[i][bottomSelection])
+                                            break;
+                                        case "multiply": 
+                                            value = Number(rows[i][topSelection]) * Number(rows[i][bottomSelection])
+                                            break;
+                                        case "divide":
+                                            value = Number(rows[i][topSelection]) / Number(rows[i][bottomSelection])
+                                            break;
+                                    }    
+                            }
+                            data.push([
+                                rows[i]["Date"],
+                                `${topSelection} ${operationDictionary[operatorSelection]} ${bottomSelection}`,
+                                value
+                            ])
+                        } else { 
+                            if (isNaN(topSelection)) { // because people can input numbers into top selection
+                                data.push([
+                                    rows[i]["Date"],
+                                    topSelection,
+                                    rows[i][topSelection]
+                                ])
+                            } else { 
+                                data.push([
+                                    rows[i]["Date"],
+                                    topSelection,
+                                    topSelection
+                                ])
+                            }
+                            
+                        }
+
+                        
+                        
+
+                    }
+                     
+                   
+                        
+                    
+                    
+                })
+                
+                
+            } else { 
+                // is not Advanced mode
+
+
+                //- var objDiv = document.getElementById("chart-container");
+                //- objDiv.scrollTop = objDiv.scrollHeight
+                
+                
+                
+                // Get selected series names
+                var selectedSeries = selectedSeries || select.selected() // ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)"]
+                if (!selectedSeries.length) return
+
+                var series = []
+                if (chart) chart.dispose()
+
+                for (var i = 0; i < selectedSeries.length; i++) { 
+                    URLArray.push(index.indexOf(selectedSeries[i]))
+                }
+
+                
            
 
-            // Prepare data array
-            var data = []
-            
-            var rows = !{stringify(rows)}
-
-            for (var j = 0; j < rows.length; j++) { 
-                for (var k = 0; k < selectedSeries.length; k++) { 
-                    // For every series, add it to the data
-                    data.push([
-                        rows[j]["Date"],
-                        selectedSeries[k],
-                        rows[j][selectedSeries[k]]
-                    ])
-                }
+                // Prepare data array
                 
+
+                for (var j = 0; j < rows.length; j++) { 
+                    for (var k = 0; k < selectedSeries.length; k++) { 
+                        // For every series, add it to the data
+                        data.push([
+                            rows[j]["Date"],
+                            selectedSeries[k],
+                            rows[j][selectedSeries[k]]
+                        ])
+                    }
+                    
+                }
             }
-            
+
             // check if log selected
             var isLog = select2.selected()
+            var log = isLog.length ? true : false
+            if (params.log) isLog = "log" // URL check
+            // Clear params.log
+            params.log = false
+
 
             var caption = "User Generated Chart"
             var dataStore = new FusionCharts.DataStore()
@@ -163,23 +843,60 @@ block content
 
             
             var input = document.getElementById("link-url")
-            input.value = `https://sgcovidgraphs.xyz/create?series=${series.join("_")}`
-            
+            URLString = URLArray.join("l")
+            input.value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}`
+                
             document.getElementById("hidden").style.display = "block"
             document.getElementById('copy-button').innerHTML = "Copy"
 
         }
-        function copy() {
-            /* Get the text field */
-            var copyText = document.getElementById("link-url");
 
-            /* Select the text field */
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+        /* Decoding URL */
+        var params = !{stringify(params)}
+        if (params.series) { 
+            if (params.type) { 
+                // is an ADVANCED graph
+                // set all the slimselects
+                var URLArray = params.series.split("l")
+                advancedSelectTop1.set(index[URLArray[0]])
+                advancedSelectOperation1.set(operators[URLArray[1]])
+                advancedSelectBottom1.set(index[URLArray[2]])
+                advancedSelectTop2.set(index[URLArray[3]])
+                advancedSelectOperation2.set(operators[URLArray[4]])
+                advancedSelectBottom2.set(index[URLArray[5]])
+                advancedSelectTop3.set(index[URLArray[6]])
+                advancedSelectOperation3.set(operators[URLArray[7]])
+                advancedSelectBottom3.set(index[URLArray[8]])
+                advancedSelectTop4.set(index[URLArray[9]])
+                advancedSelectOperation4.set(operators[URLArray[10]])
+                advancedSelectBottom4.set(index[URLArray[11]])
+                advancedSelectTop5.set(index[URLArray[12]])
+                advancedSelectOperation5.set(operators[URLArray[13]])
+                advancedSelectBottom5.set(index[URLArray[14]])
+                advancedSelectTop6.set(index[URLArray[15]])
+                advancedSelectOperation6.set(operators[URLArray[16]])
+                advancedSelectBottom6.set(index[URLArray[17]])
+                //- isAdv = true
+                document.getElementById("show-advanced-btn").click()
+            } else { 
+                // is a LAME graph
+                
+                var URLArray = params.series.split("l")
+                var selectedSeries = []                
+                
+                for (var i = 0; i < URLArray.length; i++) { 
+                    selectedSeries.push(index[URLArray[i]])                    
+                }
+                select.set(selectedSeries)
 
-            /* Copy the text inside the text field */
-            document.execCommand("copy");
-
-            /* Alert the copied text */
-            document.getElementById('copy-button').innerHTML = "Copied!"
+                
+            }
+            if (params.log) { 
+                // is a LOG graph
+                select2.set("log")
+            }
+            generateChart()
         }
+
+    script.
+        

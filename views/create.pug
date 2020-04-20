@@ -337,6 +337,7 @@ block content
                 select(id="graph-options" multiple)
                     option(data-placeholder="true")   
                     option(value="log") Enable logarithmic y-axis
+                    option(value="moving-average") Draw moving average lines (average of past 7 days)
                 
             .axis-selector
                 h3 y-axis: Case Numbers
@@ -356,12 +357,17 @@ block content
         var select = new SlimSelect({
             select: "#series-compare",
             searchFocus: false,
-            placeholder: 'Select series...'
+            placeholder: 'Select series...',
+            closeOnSelect: false,
+            selectByGroup: true
             //- limit: 5
         })
         var select2 = new SlimSelect({
             select: "#graph-options",
-            placeholder: 'Select options...'
+            placeholder: 'Select options...',
+            closeOnSelect: false,
+            selectByGroup: true
+            
         })
         var series = !{stringify(series)}
 
@@ -599,12 +605,20 @@ block content
         }   
         
         function generateChart(selectedSeries) {
-            // stuff for URL generation 
-             
+            // stuff for URL generation              
             var URLArray = [] 
             var URLString;
+
+            // This code is for moving average calculating
+            var totalOfLast = []
+            var lookBackTime = 7
+            // End
+
             var rows = !{stringify(rows)}
             var data = []
+
+
+
             // Generate schema
             var schema = [{
                 "name": "Time", // x
@@ -663,7 +677,8 @@ block content
                         multiply: "×",
                         divide: "÷"
                     }
-                
+
+                    
                     for (var i = 0; i < rows.length; i++) { 
                         // each row is rows[i]
                         var value;
@@ -737,6 +752,24 @@ block content
                                 `${topSelection} ${operationDictionary[operatorSelection]} ${bottomSelection}`,
                                 value
                             ])
+
+
+                            
+                            if (select2.selected().includes("moving-average")) { // MOVING AVERAGE
+                                
+                                totalOfLast.push(value) // push the current value to the array
+                                
+                                if (totalOfLast.length >= lookBackTime) { 
+                                    var movingAverage = (addArray(totalOfLast)) / lookBackTime
+                                    data.push([
+                                        rows[i]["Date"],
+                                        `${topSelection} ${operationDictionary[operatorSelection]} ${bottomSelection} (Moving Average - last ${lookBackTime} days)`,
+                                        movingAverage
+                                    ])
+                                    totalOfLast.shift()
+                                }                                                   
+                            }
+
                         } else { 
                             if (isNaN(topSelection)) { // because people can input numbers into top selection
                                 data.push([
@@ -744,6 +777,23 @@ block content
                                     topSelection,
                                     rows[i][topSelection]
                                 ])
+
+                                if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
+                                    totalOfLast.push(rows[i][topSelection])
+                                    if (totalOfLast.length >= lookBackTime) { 
+                                        var movingAverage = (addArray(totalOfLast)) / lookBackTime
+                                        data.push([
+                                            rows[i]["Date"],
+                                            `${topSelection} (Moving Average - last ${lookBackTime} days)`,
+                                            movingAverage
+                                        ])
+                                        totalOfLast.shift()
+                                    }
+
+
+
+                                                                           
+                                }
                             } else { 
                                 data.push([
                                     rows[i]["Date"],
@@ -791,7 +841,7 @@ block content
 
                 // Prepare data array
                 
-
+                
                 for (var j = 0; j < rows.length; j++) { 
                     for (var k = 0; k < selectedSeries.length; k++) { 
                         // For every series, add it to the data
@@ -800,13 +850,31 @@ block content
                             selectedSeries[k],
                             rows[j][selectedSeries[k]]
                         ])
+                        
+                        if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
+                            totalOfLast.push(rows[j][selectedSeries[k]])
+                            if (totalOfLast.length >= lookBackTime) { 
+                                var movingAverage = (addArray(totalOfLast)) / lookBackTime
+                                data.push([
+                                    rows[j]["Date"],
+                                    `${selectedSeries[k]} (Moving Average - last ${lookBackTime} days)`,
+                                    movingAverage
+                                ])
+                                totalOfLast.shift()
+                            }
+                            console.log(totalOfLast)
+
+
+
+                                                                    
+                        }
                     }
                     
                 }
             }
 
             // check if log selected
-            var isLog = select2.selected()
+            var isLog = select2.selected().includes("log") ? "log" : ''
             var log = isLog.length ? true : false
             if (params.log) isLog = "log" // URL check
             // Clear params.log
@@ -897,6 +965,8 @@ block content
             }
             generateChart()
         }
+
+        const addArray = arr => arr.reduce((a, b) => Number(a) + Number(b), 0);
 
     script.
         

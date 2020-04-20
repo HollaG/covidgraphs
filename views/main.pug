@@ -2,8 +2,8 @@ extends layout
 
 block content
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
-    script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
-    
+    script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
+    //- script(type="text/javascript" src="https://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.candy.js")
     //- script(src="/javascripts/fusioncharts.js")
     link(rel="stylesheet" href="/stylesheets/main.css")
     
@@ -179,19 +179,21 @@ block content
             renderAt: 'chart-container1',
             width: "100%",
             height: "100%",
+            
             dataSource: {
                 data: fusionTable1,
                 chart: {
                     setadaptiveymin: 0,
-                    exportEnabled: "1"
+                    exportEnabled: "1",
+                    
                 },
                 caption: {
                 text: 'Cases in Singapore against Time'
                 },
                 yAxis: [{
-                    "plot": {
-                        "value": "Case Numbers",
-                        "type": "area",
+                    plot: {
+                        value: "Case Numbers",
+                        type: "area",
                         style: {
                             plot: {
                                 "fill-opacity": "0.8"
@@ -221,7 +223,8 @@ block content
                 chart: {
                     showvalues: "1",
                     multicanvas: false,
-                    exportEnabled: "1"
+                    exportEnabled: "1",
+                    theme: "candy"
                 },
                 caption: {
                     text: 'New Cases in Singapore against Time'

@@ -400,7 +400,7 @@ block content
         }
         // User clicks on advanced options
         // - Action: Reveal advanced options       
-        
+        const addArray = arr => arr.reduce((a, b) => Number(a) + Number(b), 0);
         
         
         // User selects USER INPUT for both
@@ -876,10 +876,12 @@ block content
             // check if log selected
             var isLog = select2.selected().includes("log") ? "log" : ''
             var log = isLog.length ? true : false
-            if (params.log) isLog = "log" // URL check
+            //- if (params.log) isLog = "log" // URL check
             // Clear params.log
             params.log = false
 
+            // check if movAvg selected
+            var movAvg = select2.selected().includes("moving-average") ? "true" : "false"
 
             var caption = "User Generated Chart"
             var dataStore = new FusionCharts.DataStore()
@@ -912,7 +914,7 @@ block content
             
             var input = document.getElementById("link-url")
             URLString = URLArray.join("l")
-            input.value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}`
+            input.value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}`
                 
             document.getElementById("hidden").style.display = "block"
             document.getElementById('copy-button').innerHTML = "Copy"
@@ -922,7 +924,7 @@ block content
         /* Decoding URL */
         var params = !{stringify(params)}
         if (params.series) { 
-            if (params.type) { 
+            if (params.type == "true") { 
                 // is an ADVANCED graph
                 // set all the slimselects
                 var URLArray = params.series.split("l")
@@ -959,14 +961,27 @@ block content
 
                 
             }
-            if (params.log) { 
+
+            var arrOpts = []
+            if (params.log == "true") { 
+                
                 // is a LOG graph
-                select2.set("log")
+                
+                arrOpts.push("log")
+                           
             }
+            if (params.movAvg == "true") { 
+                arrOpts.push("moving-average")
+            }
+
+
+            select2.set(arrOpts)
+
+
             generateChart()
         }
 
-        const addArray = arr => arr.reduce((a, b) => Number(a) + Number(b), 0);
+        
 
     script.
         

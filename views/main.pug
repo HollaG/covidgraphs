@@ -3,7 +3,7 @@ extends layout
 block content
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
-    //- script(type="text/javascript" src="https://static.fusioncharts.com/code/latest/themes/fusioncharts.theme.candy.js")
+    script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
     //- script(src="/javascripts/fusioncharts.js")
     link(rel="stylesheet" href="/stylesheets/main.css")
     
@@ -185,6 +185,7 @@ block content
                 chart: {
                     setadaptiveymin: 0,
                     exportEnabled: "1",
+                    //- theme: "candy"
                     
                 },
                 caption: {

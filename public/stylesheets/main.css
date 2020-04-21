@@ -35,7 +35,7 @@
 @media screen and (max-width: 1000px) {
     .chart { 
         
-        min-height: 300px;
+        min-height: 400px;
         width: 90%
     }
     #table1 { 

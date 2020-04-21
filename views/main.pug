@@ -38,12 +38,14 @@ block content
                             option(value="4") Graph: Total Cases against Time (Logarithmic)                        
                     .section
                         .button-wrapper(onclick="location.href = 'create'" onmouseover="startAnimation()" onmouseout="stopAnimation()")
-                            a(class="styled" href="create") Create your own graph <i class="fas fa-angle-right" id='animate'></i>
+                            a(class="styled" href="create") Create your own graph 
+                            i(class="fas fa-angle-right" id='animate')
 
                     
                     .section
                         .button-wrapper(onclick="showTable()")
-                            a(class="styled" id="changeHtml" name="table") Show raw data <i class="fas fa-chevron-up"></i>
+                            a(class="styled" id="changeHtml" name="table") Show raw data 
+                            i(class="fas fa-chevron-up" id="animate2")
                         
                             
                            
@@ -227,11 +229,13 @@ block content
             if (!hidden) { 
                 hidden = true
                 document.getElementById("hide-table").style.display = "none"
-                document.getElementById("changeHtml").innerHTML = "Show raw data <i class='fas fa-chevron-up'></i>"
+                document.getElementById("changeHtml").innerHTML = "Show raw data"
+                document.getElementById("animate2").classList = 'fas fa-chevron-up'
             } else { 
                 hidden = false
                 document.getElementById("hide-table").style.display = "block"
-                document.getElementById("changeHtml").innerHTML = "Hide raw data <i class='fas fa-chevron-down'></i>"
+                document.getElementById("changeHtml").innerHTML = "Hide raw data"
+                document.getElementById("animate2").classList = 'fas fa-chevron-down'
             }
         }
 
@@ -252,11 +256,12 @@ block content
                 chart: {
                     setadaptiveymin: 0,
                     exportEnabled: "1",
-                    theme: theme
+                    theme: theme,
+                    showYAxisValues: "0"
                     
                 },
                 caption: {
-                text: 'Cases in Singapore against Time'
+                text: 'Total Cases against Time'
                 },
                 yAxis: [{
                     plot: {
@@ -295,7 +300,7 @@ block content
                     theme: theme
                 },
                 caption: {
-                    text: 'New Cases in Singapore against Time'
+                    text: 'New Cases against Time'
                 },
                 series: "Case Type",
                 yAxis: [{
@@ -336,7 +341,7 @@ block content
                     theme: theme
                 },
                 caption: {
-                    text: 'Recoveries in Singapore against Time'
+                    text: 'Recoveries against Time'
                 },
                 yAxis: [{
                     "plot": {

@@ -26,10 +26,20 @@
     
 }
 
+@media screen and (max-width: 700px) {
+    .advanced-series { 
+        width: 46% !important;
+        
+        margin-right: 5px !important;
+        margin-left: 5px !important;
+    }
+ }
+
+
 @media screen and (max-width: 1000px) {
     .chart { 
         height: 55vw;
-        min-height: 300px;
+        min-height: 400px;
         max-width: 95%
     }   
     button { 
@@ -43,6 +53,15 @@
     }
     .copy-text { 
         width: 95% !important;
+    }
+    .float-right { 
+        float: none !important;
+
+        width: 100% !important
+        
+    }
+    .float-right .button-wrapper {
+        width: 100% !important;
     }
 }
 @media screen and (max-width: 1500px) {

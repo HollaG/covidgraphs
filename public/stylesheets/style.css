@@ -15,9 +15,27 @@ body, html {
   text-align: center;
   z-index: 10
 }
+
 .dark-changer>.button-wrapper { 
   height: 50px
 }
+
+@media screen and (max-width: 1000px) {
+  .dark-changer { 
+    position: relative;    
+    width: 100%;
+    text-align: center;
+    
+    
+    
+  }
+  .dark-changer>.button-wrapper { 
+    height: auto;
+    border-radius: 0 0 4px 4px;
+  }
+
+}
+
 .selector { 
   font-family: 'Open Sans', sans-serif;
 }

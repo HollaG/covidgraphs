@@ -16,15 +16,24 @@ html
     
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
-    
+    link(href='/stylesheets/fab.css' rel="stylesheet")
     
     script(src="/javascripts/font-awesome.js")
-    meta(name="viewport" content="width=800px")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
   body
     .dark-changer
       .button-wrapper.center(id="dark-mode" onclick="toggleDarkMode()")
-            a(class="styled" id="dark-mode-text") Enable dark mode
-
+        a(class="styled" id="dark-mode-text") Enable dark mode
+    .cover
+    nav.container
+      a.buttons(onclick="toggleDarkMode()")
+      a.buttons(onclick="window.scrollTo(0,0);")
+      a.buttons(onclick="window.scrollTo(0,document.body.scrollHeight)")
+      a.buttons(href='create')
+      a.buttons(href='/')
+      
+      a.buttons
+      
     block content
     .footer
       p Data supplied by <a href="https://www.moh.gov.sg/covid-19/situation-report"> MOH </a>

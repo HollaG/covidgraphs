@@ -3,6 +3,20 @@ body, html {
   height: 100%;
   width: 100%;
   font: 14px 'Roboto', sans-serif !important  ;
+  
+}
+
+.dark-changer { 
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  z-index: 10
+}
+.dark-changer>.button-wrapper { 
+  height: 50px
 }
 .selector { 
   font-family: 'Open Sans', sans-serif;
@@ -11,10 +25,8 @@ body p, a {
   font-family: 'Open Sans', sans-serif;
 }
 
-body { 
-  min-width: fit-content;
-  margin: 0
-}
+
+
 a {
   color: #00B7FF;
 }
@@ -38,9 +50,7 @@ p {
 }
 
 /* styling to theme */ 
-a.styled { 
 
-}
 .button-wrapper { 
     /* width: 40%; */
     /* overflow: hidden */
@@ -53,8 +63,15 @@ a.styled {
     box-sizing: border-box;
     transition: background-color .2s;
     text-align: left;
-    cursor: pointer
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    
 
+}
+
+.center { 
+  text-align: center;
 }
 .styled {
     color: #666;

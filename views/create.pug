@@ -4,9 +4,9 @@ block content
     link(rel="stylesheet" href="/stylesheets/create.css")
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
+    script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
     
-    
-    link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
+    //- link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
     .page-container
         .container
             .text
@@ -23,20 +23,22 @@ block content
                     
                     .float-right
                         .button-wrapper(onclick="showAdv()" id='show-advanced-btn')
-                            a(class="styled") Use advanced mode
-                .select-wrapper(id="select-hider")
+                            a(class="styled" id="advEasy") Use advanced mode
+                .select-wrapper(id="select-hider")                    
+                    
                     select(id="series-compare" multiple)
-                        option(data-placeholder="true")   
-                            optgroup(label="Dailies")
-                                option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
-                                option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
-                                option(value="New local community cases (per day)") New local community cases (per day)
-                                option(value="New local cases (per day)") New local cases (per day)
-                                option(value="New imported cases(per day)") New imported cases(per day)
-                                option(value="New cases (per day)") New cases (per day)
-                                option(value="Recovered (per day)") Recovered (per day)
-                                option(value="# ICU (on the day)") # ICU (on the day)
-                            optgroup(label="Totals")
+                        
+                        optgroup(label="Dailies")
+                            option(data-placeholder="true")   
+                            option(value="New local dormitory cases (per day)") New local dormitory cases (per day)
+                            option(value="New local work permit holder cases (per day)") New local work permit holder cases (per day)
+                            option(value="New local community cases (per day)") New local community cases (per day)
+                            option(value="New local cases (per day)") New local cases (per day)
+                            option(value="New imported cases(per day)") New imported cases(per day)
+                            option(value="New cases (per day)") New cases (per day)
+                            option(value="Recovered (per day)") Recovered (per day)
+                            option(value="# ICU (on the day)") # ICU (on the day)
+                        optgroup(label="Totals")
                             option(value="Total dormitory cases") Total dormitory cases
                             option(value="Total work permit holder cases") Total work permit holder cases
                             option(value="Total local community cases") Total local community cases
@@ -51,7 +53,7 @@ block content
                     .advanced-row-1
                         .advanced-series
                             h4 Series 1
-                            p.hide(id="series-1") placeholder
+
                             .top
                                 select(id="advanced-select-top-1")      
                                     option(data-placeholder="true")                                                
@@ -368,9 +370,45 @@ block content
             
             input(type="text" id="link-url-copy" readonly style="opacity: 0; cursor: default")
             
-
+    script.
+        new SlimSelect({
+            select: "#test"
+        })
     
     script.
+        
+        var charts = document.getElementsByClassName("chart")
+        if(window.innerHeight > window.innerWidth){ // Portrait
+            var charts = document.getElementsByClassName("chart")
+            for (var i = 0; i < charts.length; i++) { 
+                charts[i].style.height = "800px"                    
+            }
+        }   
+        var query = window.matchMedia("(orientation:landscape)")
+        function screenTest(e) { 
+            var charts = document.getElementsByClassName("chart")
+            
+            if (!e.matches) { 
+                for (var i = 0; i < charts.length; i++) { 
+                    charts[i].style.height = "800px"                    
+                }
+                
+            } else { 
+                for (var i = 0; i < charts.length; i++) { 
+                    charts[i].style.height = "45vw"                    
+                }   
+            }
+        }
+        query.addListener(screenTest)
+        
+        
+        
+        
+        
+        
+        
+        
+        
         var animate = document.getElementById('animate')      
         function startAnimation() { 
             animate.className = "fas fa-angle-double-left"             
@@ -382,11 +420,11 @@ block content
         
         var select = new SlimSelect({
             select: "#series-compare",
-            searchFocus: false,
+            
             placeholder: 'Select series...',
             closeOnSelect: false,
             selectByGroup: true
-            //- limit: 5
+            
         })
         var select2 = new SlimSelect({
             select: "#graph-options",
@@ -439,12 +477,12 @@ block content
         function showAdv() { 
             if (!isAdv) { 
                 document.getElementById("show-advanced").style.display = "block"
-                document.getElementById("show-advanced-btn").innerHTML = "Use simple mode"
+                document.getElementById("advEasy").innerHTML = "Use simple mode"
                 document.getElementById("select-hider").style.display = "none"
                 isAdv = true
             } else { 
                 document.getElementById("show-advanced").style.display = "none"
-                document.getElementById("show-advanced-btn").innerHTML = "Use advanced mode"
+                document.getElementById("advEasy").innerHTML = "Use advanced mode"
                 isAdv = false
                 document.getElementById("select-hider").style.display = "block"
             }
@@ -631,6 +669,44 @@ block content
                 "divide": "d"
         }   
         
+        var darkMode = false
+        var theme = "fusion"
+        var cookie = !{stringify(cookie)}
+        if (cookie) { 
+            if (cookie.dark_mode == "true") {
+                
+                darkMode = true
+                theme = "candy"
+                document.getElementById("dark-mode-text").innerHTML = "Disable dark mode"
+                document.getElementsByTagName("BODY")[0].classList.toggle("dark")
+            }
+        }
+
+        function toggleDarkMode() { 
+            document.getElementsByTagName("BODY")[0].classList.toggle("dark")      
+            var obj = FusionCharts.items
+            if (!darkMode) { 
+                // if not darkMode
+                darkMode = true;
+                theme = "candy"
+                if (!(Object.keys(obj).length === 0 && obj.constructor === Object)) {                    
+                    FusionCharts.items["chartobject-1"].setChartAttribute("theme", "candy")
+                }              
+                // set cookie
+                document.cookie = "dark_mode = true"
+                document.getElementById("dark-mode-text").innerHTML = "Disable dark mode"
+            } else { 
+                darkMode = false
+                theme = "fusion"
+                if (!(Object.keys(obj).length === 0 && obj.constructor === Object)) {
+                    FusionCharts.items["chartobject-1"].setChartAttribute("theme", "fusion") 
+                }
+                               
+                // set cookie
+                document.cookie = "dark_mode = false"
+                document.getElementById("dark-mode-text").innerHTML = "Enable dark mode"
+            }
+        }
         function generateChart(selectedSeries) {
             
             // html editing
@@ -895,7 +971,7 @@ block content
                                 ])
                                 totalOfLast.shift()
                             }
-                            console.log(totalOfLast)
+                            
 
 
 
@@ -920,7 +996,8 @@ block content
             var dataStore = new FusionCharts.DataStore()
             var dataSource = { 
                 chart: {
-                    exportEnabled: "1"
+                    exportEnabled: "1",
+                    theme: theme
                 },
                 caption: {
                     text: caption
@@ -943,7 +1020,7 @@ block content
                 height: "100%",
                 dataSource: dataSource
             }).render()
-
+            
             URLString = URLArray.join("l")
             document.getElementById("link-url").innerHTML = `https://sgcovidgraphs.xyz/create?type=${isAdv}&log=${log}&movAvg=${movAvg}?series=... <i class="far fa-copy" id='animate3'></i>`
             document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}`

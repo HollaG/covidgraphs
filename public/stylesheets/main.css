@@ -1,6 +1,5 @@
 
 
-
 .container { 
     text-align: center;
 }
@@ -16,7 +15,11 @@
 #table1 { 
     width: 60%;
     margin: auto;
-    
+    table-layout: auto;
+}
+
+#table1 .date { 
+    width: 100px
 }
 
 #hide-table { 
@@ -31,12 +34,12 @@
 }
 @media screen and (max-width: 1000px) {
     .chart { 
-        height: 45vw;
+        
         min-height: 300px;
-        max-width: 90%
+        width: 90%
     }
     #table1 { 
-        width: 90%;
+        width: 95%;
         margin: auto
     }
     button { 
@@ -52,7 +55,7 @@
 }
 @media screen and (max-width: 1500px) {
     .chart { 
-        height: 45vw
+        height: 55vw
     }
 
 
@@ -67,10 +70,6 @@ button {
     display: block
 }
 
-.selector { 
-    
-    
-}
 
 .selector-wrapper { 
     width: 40%;

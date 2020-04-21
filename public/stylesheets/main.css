@@ -19,6 +19,10 @@
     
 }
 
+#hide-table { 
+    display: none
+}
+
 #table1.sticky th { 
     position: sticky;
     top: 0;
@@ -42,7 +46,7 @@
         font-size: 1.5vw !important
     }
     .selector-wrapper { 
-        max-width: 100% !important;
+        width: 60% !important;
     }
 
 }
@@ -65,11 +69,20 @@ button {
 
 .selector { 
     
-    border-radius: 5px;
-    /* margin: 10px */
+    
 }
 
 .selector-wrapper { 
-    
+    width: 40%;
     margin: auto
+}
+
+
+
+
+
+
+
+.section { 
+    margin-top: 10px
 }

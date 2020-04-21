@@ -4,20 +4,26 @@ block content
     link(rel="stylesheet" href="/stylesheets/create.css")
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.js")
+    
     
     link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
     .page-container
         .container
             .text
                 h1 COVID-19 Visualisation (Singapore)
-                .back
-                    button(onclick="window.history.back()") Go back
+                
+                .create-btn-ctn
+                    .button-wrapper(onclick="window.history.back()" onmouseover="startAnimation()" onmouseout="stopAnimation()")
+                        a(class="styled") Go back <i class="fas fa-angle-left" id='animate'></i>
+                   
 
             .series-selector
                 .floating
                     h3 Select series to be compared
-                    button(onclick='showAdv()' id="show-advanced-btn") Use advanced mode
+                    
+                    .float-right
+                        .button-wrapper(onclick="showAdv()" id='show-advanced-btn')
+                            a(class="styled") Use advanced mode
                 .select-wrapper(id="select-hider")
                     select(id="series-compare" multiple)
                         option(data-placeholder="true")   
@@ -332,7 +338,10 @@ block content
                                     option(value="Total cases") Total cases
                                     option(value="Total recovered") Total recovered
                                     option(value="# still in hospital") # still in hospital      
-                button(onclick="clearAll()") Clear all selection
+               
+                .create-btn-ctn
+                    .button-wrapper(onclick="clearAll()")
+                        a(class="styled") Clear all selections <i class="fas fa-eraser"></i>
                 h3 Select graph options
                 select(id="graph-options" multiple)
                     option(data-placeholder="true")   
@@ -343,17 +352,34 @@ block content
                 h3 y-axis: Case Numbers
                 h3 x-axis: Time
 
-            .button
-                button(onclick="generateChart()") Generate graph
-        
+            
+            .create-btn-ctn(class="right")
+                
+                .button-wrapper(onclick="generateChart()")
+                    a(class="styled") Generate graph <i class="fas fa-grip-lines" id='animate2'></i>
+
         #chart-container(class="chart")
         .copy-text(id="hidden")
             p Share this graph!
-            input(type=text id="link-url" readonly)
-            button(onclick="copy()" id="copy-button") Copy
+            .create-btn-ctn                
+                .button-wrapper(onclick="copy()")
+                    a(class="styled" id='link-url') <i class="far fa-copy"></i>
+
+            
+            input(type="text" id="link-url-copy" readonly style="opacity: 0; cursor: default")
+            
 
     
     script.
+        var animate = document.getElementById('animate')      
+        function startAnimation() { 
+            animate.className = "fas fa-angle-double-left"             
+        }
+        function stopAnimation() { 
+            animate.className = "fas fa-angle-left"
+        }
+        
+        
         var select = new SlimSelect({
             select: "#series-compare",
             searchFocus: false,
@@ -386,17 +412,18 @@ block content
         
         function copy() {
             /* Get the text field */
-            var copyText = document.getElementById("link-url");
+            var copyText = document.getElementById("link-url-copy");
 
             /* Select the text field */
+            copyText.focus()
             copyText.select();
-            copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+            //- copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
             /* Copy the text inside the text field */
             document.execCommand("copy");
 
             /* Alert the copied text */
-            document.getElementById('copy-button').innerHTML = "Copied!"
+            document.getElementById('animate3').className = "far fa-clipboard"
         }
         // User clicks on advanced options
         // - Action: Reveal advanced options       
@@ -605,6 +632,12 @@ block content
         }   
         
         function generateChart(selectedSeries) {
+            
+            // html editing
+            var animate2 = document.getElementById('animate2')
+            animate2.className = "fas fa-grip-lines-vertical"
+
+
             // stuff for URL generation              
             var URLArray = [] 
             var URLString;
@@ -911,13 +944,14 @@ block content
                 dataSource: dataSource
             }).render()
 
-            
-            var input = document.getElementById("link-url")
             URLString = URLArray.join("l")
-            input.value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}`
-                
+            document.getElementById("link-url").innerHTML = `https://sgcovidgraphs.xyz/create?type=${isAdv}&log=${log}&movAvg=${movAvg}?series=... <i class="far fa-copy" id='animate3'></i>`
+            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}`
+            
+            
+
             document.getElementById("hidden").style.display = "block"
-            document.getElementById('copy-button').innerHTML = "Copy"
+           
 
         }
 

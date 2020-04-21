@@ -3,7 +3,7 @@ extends layout
 block content
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js")   
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
-    script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
+    //- script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
     //- script(src="/javascripts/fusioncharts.js")
     link(rel="stylesheet" href="/stylesheets/main.css")
     
@@ -27,20 +27,28 @@ block content
             //-     button(name="logarithmic" onclick="toggleLog()") Toggle Logarithmic Scale
             //-     br 
             //-     br
-            //-     br
+            //-     br          
+
             
             .selector-wrapper
                 .selector
-                    .button-top
-                        button(name="1" onclick="changeGraph(1)") Total Cases against Time
-                        button(name="2" onclick="changeGraph(2)") New Cases against Time
-                    .button-bottom
-                        button(name="3" onclick="changeGraph(3)") Recoveries against Time
-                        button(name="4" onclick="changeGraph(4)") Total Cases against Time (Logarithmic)
-                    button(type="button" onclick="location.href = 'create'") Create your own graph
-                    .button-table
+                    .section
+                        select(id='select-graph')                            
+                            option(value="1") Graph: Total Cases against Time
+                            option(value="2") Graph: New Cases against Time
+                            option(value="3") Graph: Recoveries against Time
+                            option(value="4") Graph: Total Cases against Time (Logarithmic)                        
+                    .section
+                        .button-wrapper(onclick="location.href = 'create'" onmouseover="startAnimation()" onmouseout="stopAnimation()")
+                            a(class="styled" href="create") Create your own graph <i class="fas fa-angle-right" id='animate'></i>
+
+                    
+                    .section
+                        .button-wrapper(onclick="showTable()")
+                            a(class="styled" id="changeHtml" name="table") Show raw data <i class="fas fa-chevron-up"></i>
                         
-                        button(type="button" id="changeHtml" name="table" onclick="showTable()" ) Hide raw data
+                            
+                           
          
             .table(id="hide-table")
                 table(class="mui-table mui-table--bordered sticky" id="table1")
@@ -125,7 +133,23 @@ block content
         }
         query.addListener(screenTest)
     script.
+        var animate = document.getElementById('animate')      
+        function startAnimation() { 
+            animate.className = "fas fa-angle-double-right"             
+        }
+        function stopAnimation() { 
+            animate.className = "fas fa-angle-right"
+        }
+        var select = new SlimSelect({
+            select: '#select-graph',
+            showSearch: false,
+            onChange: (option) => {
+                changeGraph(Number(option.value))               
+                
+            }
+        })
         function changeGraph(graph) {
+            
             var charts = document.getElementsByClassName("chart")
             
             for (var i = 0; i < charts.length; i++) {
@@ -154,17 +178,17 @@ block content
                     break
             }
         }
-        var hidden = false
+        var hidden = true
         function showTable() { 
             
             if (!hidden) { 
                 hidden = true
                 document.getElementById("hide-table").style.display = "none"
-                document.getElementById("changeHtml").innerHTML = "Show raw data"
+                document.getElementById("changeHtml").innerHTML = "Show raw data <i class='fas fa-chevron-up'></i>"
             } else { 
                 hidden = false
                 document.getElementById("hide-table").style.display = "block"
-                document.getElementById("changeHtml").innerHTML = "Hide raw data"
+                document.getElementById("changeHtml").innerHTML = "Hide raw data <i class='fas fa-chevron-down'></i>"
             }
         }
 

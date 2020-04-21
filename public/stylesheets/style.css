@@ -2,8 +2,13 @@ body, html {
   margin: 0;
   height: 100%;
   width: 100%;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  
+  font: 14px 'Roboto', sans-serif !important  ;
+}
+.selector { 
+  font-family: 'Open Sans', sans-serif;
+}
+body p, a { 
+  font-family: 'Open Sans', sans-serif;
 }
 
 body { 
@@ -30,4 +35,76 @@ p {
 .footer p { 
   color: #4f4f4f;
   font-style: italic
+}
+
+/* styling to theme */ 
+a.styled { 
+
+}
+.button-wrapper { 
+    /* width: 40%; */
+    /* overflow: hidden */
+    height: 30px;
+    padding: 6px;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    background-color: #fff;
+    outline: 0;
+    box-sizing: border-box;
+    transition: background-color .2s;
+    text-align: left;
+    cursor: pointer
+
+}
+.styled {
+    color: #666;
+    width: 100%;
+    
+}
+i { 
+    text-align: center;
+}
+.fas, .far { 
+    float: right;
+    margin: 0 4px;
+    /* width: 14px; */
+    
+}
+.fa-angle-left, .fa-angle-double-left, .fa-angle-right, .fa-angle-double-right { 
+  font-size: 17px
+}
+.button-wrapper:hover .fa-chevron-up, .button-wrapper:hover .fa-chevron-down {
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+    -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+/* .fa-angle-up:hover {
+    -ms-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+} */
+.button-wrapper:hover {
+    
+    background: #dfdfdf;
+    letter-spacing: 0.4px;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+    
+}
+
+.button-wrapper:hover .fa-grip-lines { 
+    -ms-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
 }

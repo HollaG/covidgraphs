@@ -1,0 +1,10 @@
+/* Standard Color */
+a { 
+    color: #5648d4;
+    
+}
+a.styled {
+    text-decoration: none;
+    
+    /* color: #5648d4; */
+}

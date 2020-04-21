@@ -41,6 +41,9 @@
     .container { 
         max-width: 90%;
     }
+    .copy-text { 
+        width: 95% !important;
+    }
 }
 @media screen and (max-width: 1500px) {
     .chart { 
@@ -51,10 +54,12 @@
 }
 
 .copy-text { 
-    width: 30%;
+    width: 40%;
     margin:auto;
     text-align: center;
     margin-bottom: 50px;
+    display: none;
+    margin-top: 40px
     
 }
 
@@ -73,14 +78,12 @@ button {
     height: 30px;
     width: 200px;
 }
-.back button { 
-    height: 30px !important;
-    width: 100px !important
+.create-btn-ctn { 
+    width: 200px;
+    margin: auto
 }
 
-.copy-text { 
-    display: none
-}
+
 
 /* Advanced selection section */
 .advanced-series { 
@@ -98,10 +101,48 @@ button {
 .floating h3 { 
     float: left
 }
-.floating button { 
-    float: right
+.float-right {
+    float: right;
+    width: 20%;
+    
 }
-
+.float-right .button-wrapper { 
+    text-align: center;
+}
 .floating { 
     overflow: hidden
+}
+.right {
+    float: right;
+}
+.copy-text .create-btn-ctn { 
+    width: 100%
+}
+
+/* Tooltip */
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+  
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

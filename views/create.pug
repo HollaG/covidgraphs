@@ -6,6 +6,9 @@ block content
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
     
+    //- script(src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js")
+    //- link(rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css")
+
     //- link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
     .page-container
         .container
@@ -376,6 +379,11 @@ block content
                     option(data-placeholder="true")   
                     option(value="log") Enable logarithmic y-axis
                     option(value="moving-average") Draw moving average lines (average of past 7 days)
+                    option(value='linear') Draw linear regression line (y = ax + b)
+                    option(value='exponential') Draw exponential regression line (y = ae^(bx))
+                    option(value='logarithmic') Draw logarithmic regression line (y = a + bln(x))
+                    option(value='power') Draw power regression line (y = ax^b)
+                    option(value='polynomial') Draw polynomial regression line 
                 
             .axis-selector
                 h3 y-axis: Case Numbers
@@ -398,11 +406,28 @@ block content
             
             input(type="text" id="link-url-copy" readonly style="opacity: 0; cursor: default")
             
-    script.
+    
         
+    
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/regression/1.4.0/regression.min.js" integrity="sha256-shrQYVCltYlBHywosRi5na09S7Qru6QCOCV1c5EgJ6c=" crossorigin="anonymous")
+    //- https://bl.ocks.org/daluu/5bb59ef3f3fed3de227535da367649ba
     
     script.
         
+        //- var regressionData = [[1,1],[2,2],[3,3]]
+        //- var linReg = regression('linear', regressionData);
+        //- var polyReg = regression('polynomial', regressionData, 2);
+        //- var expoReg = regression('exponential', regressionData);
+        //- var powReg = regression('power', regressionData);
+        //- var logReg = regression('logarithmic', regressionData);
+        
+        //- var linRegEq = "Lin: y = " + linReg.equation[0].toFixed(4) + "x + " + linReg.equation[1].toFixed(2) + ", r2 = " + linReg.r2.toFixed(3);
+        //- var polyRegEq = "Poly: y = " + polyReg.equation[2].toFixed(4) + "x^2 + " + polyReg.equation[1].toFixed(4) + "x + " + polyReg.equation[0].toFixed(2) + ", r2 = " + polyReg.r2.toFixed(3);
+        //- var expoRegEq = "Exp: y = " + expoReg.equation[0].toFixed(4) + "e^(" + expoReg.equation[1].toFixed(4) + "x), r2 = " + expoReg.r2.toFixed(3);
+        //- var powRegEq = "Pow: y = " + powReg.equation[0].toFixed(4) + "x^" + powReg.equation[1].toFixed(2) + ", r2 = " + powReg.r2.toFixed(3);
+        //- var logRegEq = "Log: y = " + logReg.string + ", r2 = " + logReg.r2.toFixed(3);
+        //- var allEqs = "Trends: " + linRegEq + "; " + polyRegEq + "; " + expoRegEq + "; " + powRegEq + "; " + logRegEq;
+
         var charts = document.getElementsByClassName("chart")
         if(window.innerHeight > window.innerWidth){ // Portrait
             var charts = document.getElementsByClassName("chart")
@@ -548,6 +573,7 @@ block content
             deselectLabel: '<span class="red">✖</span>',
             showContent: 'down',
             searchFocus: false,
+            allowDeselect: true,
             addable: function (value) { 
                 if (!Number(value)) { // if NaN
                     alert("Please only add a number!")
@@ -564,7 +590,8 @@ block content
             addable: commonSelectOpts.addable,
             deselectLabel: commonSelectOpts.deselectLabel,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation1 = new SlimSelect({
             select: "#advanced-select-operation-1", 
@@ -572,7 +599,8 @@ block content
             placeholder: "Select operation...",
             deselectLabel: commonSelectOpts.deselectLabel,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom1 = new SlimSelect({
             select: "#advanced-select-bottom-1",
@@ -581,7 +609,9 @@ block content
             addable: commonSelectOpts.addable,
             deselectLabel: commonSelectOpts.deselectLabel,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
+            
         })
         var advancedSelectTop2 = new SlimSelect({ 
             select: "#advanced-select-top-2",
@@ -590,7 +620,8 @@ block content
             addable: commonSelectOpts.addable,
             deselectLabel: commonSelectOpts.deselectLabel,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation2 = new SlimSelect({
             select: "#advanced-select-operation-2", 
@@ -598,7 +629,8 @@ block content
             placeholder: "Select operation...",
             deselectLabel: commonSelectOpts.deselectLabel,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom2 = new SlimSelect({
             select: "#advanced-select-bottom-2",
@@ -606,7 +638,8 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectTop3 = new SlimSelect({ 
             select: "#advanced-select-top-3",
@@ -614,14 +647,16 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation3 = new SlimSelect({
             select: "#advanced-select-operation-3", 
             showSearch: false,
             placeholder: "Select operation...",
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom3 = new SlimSelect({
             select: "#advanced-select-bottom-3",
@@ -629,7 +664,8 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectTop4 = new SlimSelect({ 
             select: "#advanced-select-top-4",
@@ -637,14 +673,16 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation4 = new SlimSelect({
             select: "#advanced-select-operation-4", 
             showSearch: false,
             placeholder: "Select operation...",
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom4 = new SlimSelect({
             select: "#advanced-select-bottom-4",
@@ -652,7 +690,8 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectTop5 = new SlimSelect({ 
             select: "#advanced-select-top-5",
@@ -660,14 +699,16 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation5 = new SlimSelect({
             select: "#advanced-select-operation-5", 
             showSearch: false,
             placeholder: "Select operation...",
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom5 = new SlimSelect({
             select: "#advanced-select-bottom-5",
@@ -675,7 +716,8 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectTop6 = new SlimSelect({ 
             select: "#advanced-select-top-6",
@@ -683,14 +725,16 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectOperation6 = new SlimSelect({
             select: "#advanced-select-operation-6", 
             showSearch: false,
             placeholder: "Select operation...",
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var advancedSelectBottom6 = new SlimSelect({
             select: "#advanced-select-bottom-6",
@@ -698,7 +742,8 @@ block content
             placeholder: commonSelectOpts.placeholder,
             addable: commonSelectOpts.addable,
             searchFocus: commonSelectOpts.searchFocus,
-            showContent: commonSelectOpts.showContent
+            showContent: commonSelectOpts.showContent,
+            allowDeselect: commonSelectOpts.allowDeselect
         })
         var slimSelectGrouping = [
             [advancedSelectTop1, advancedSelectOperation1, advancedSelectBottom1],
@@ -762,6 +807,12 @@ block content
                 document.getElementById("dark-mode-text").innerHTML = "Enable dark mode"
             }
         }
+        
+        // Regression Power Selector
+        var power = 4;
+
+
+
         function generateChart(selectedSeries) {
             
             // html editing
@@ -777,6 +828,19 @@ block content
             var totalOfLast = []
             var lookBackTime = 7
             // End
+
+            // This code is for regression
+            var possibleRegressions = ['linear', 'exponential', 'logarithmic', 'power', 'polynomial']
+            var regressionSelected = select2.selected().some(r=> possibleRegressions.includes(r)) // https://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-element-of-another-array-in-javascript/29447130
+                                
+            
+            
+           
+            
+            var dateIndex = []
+            
+
+
 
             var rows = !{stringify(rows)}
             var data = []
@@ -809,6 +873,9 @@ block content
                 
                 
                 slimSelectGrouping.forEach(group => { 
+                    var regressionData = [] // regression 
+                    var dataPresentCheck = false
+
                     // a)
                     if (!group[0].selected()) { // This is the first selection
                         // If the first selection is EMPTY, SKIP
@@ -842,7 +909,8 @@ block content
                         divide: "÷"
                     }
 
-                    
+                    var seriesName = ''
+
                     for (var i = 0; i < rows.length; i++) { 
                         // each row is rows[i]
                         var value;
@@ -911,14 +979,15 @@ block content
                                             break;
                                     }    
                             }
+                            seriesName = `${topSelection} ${operationDictionary[operatorSelection]} ${bottomSelection}`
                             data.push([
                                 rows[i]["Date"],
-                                `${topSelection} ${operationDictionary[operatorSelection]} ${bottomSelection}`,
+                                seriesName,
                                 value
                             ])
-
-
                             
+
+                            /* GRAPH OPTION: MOVING AVERAGE for both top and bottom */
                             if (select2.selected().includes("moving-average")) { // MOVING AVERAGE
                                 
                                 totalOfLast.push(value) // push the current value to the array
@@ -934,14 +1003,36 @@ block content
                                 }                                                   
                             }
 
+                            /* GRAPH OPTION: CALCULATING [x, y] for both top and bottom */
+                            // check if any of the regression data are selected
+                            //- var possibleRegressions = ['linear', 'exponential', 'logarithmic', 'power', 'polynomial']
+                            //- var regressionSelected = select2.selected().some(r=> possibleRegressions.includes(r)) // https://stackoverflow.com/questions/16312528/check-if-an-array-contains-any-element-of-another-array-in-javascript/29447130
+                            if (regressionSelected) { 
+                                // construct data array
+                                /*[
+                                    [x1, y1],
+                                    [x2, y2]
+                                ]*/
+                                dateIndex.push(rows[i]["Date"])                                
+                                // Ignore data if all values were ZERO
+
+                                if (Number(value)) { dataPresentCheck = true } // if number != 0
+                                if (dataPresentCheck) { 
+                                    regressionData.push([i, Number(value)])
+                                }
+                            }
+
+
+
                         } else { 
                             if (isNaN(topSelection)) { // because people can input numbers into top selection
+                                seriesName = topSelection
                                 data.push([
                                     rows[i]["Date"],
-                                    topSelection,
+                                    seriesName,
                                     rows[i][topSelection]
                                 ])
-
+                                /* GRAPH OPTION: MOVING AVERAGE for top only */
                                 if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
                                     totalOfLast.push(rows[i][topSelection])
                                     if (totalOfLast.length >= lookBackTime) { 
@@ -952,13 +1043,27 @@ block content
                                             movingAverage
                                         ])
                                         totalOfLast.shift()
-                                    }
-
-
-
-                                                                           
+                                    }                                                                                                         
                                 }
+                                /* GRAPH OPTION: CALCULATING [x, y] for both top and bottom */
+                                // check if any of the regression data are selected
+                                if (regressionSelected) {                                     
+                                    // construct data array
+                                    /*[
+                                        [x1, y1],
+                                        [x2, y2]
+                                    ]*/                                    
+                                    dateIndex.push(rows[i]["Date"])
+                                    // Ignore data if all values were ZERO
+
+                                    if (Number(rows[i][topSelection])) { dataPresentCheck = true } // if number != 0
+                                    if (dataPresentCheck) { 
+                                        regressionData.push([i, Number(rows[i][topSelection])])
+                                    }
+                                    
+                                }   
                             } else { 
+                                seriesName = topSelection
                                 data.push([
                                     rows[i]["Date"],
                                     topSelection,
@@ -972,12 +1077,123 @@ block content
                         
 
                     }
-                     
-                   
+                    // Regression data is done, we can now plot the graph. We need to first, calculate the regression equation.
+                    if (regressionSelected) {                      
+                        
+
+
+                        if (select2.selected().includes("linear")) { 
+                            var linReg = regression('linear', regressionData)
+                            var fittedData = linReg.points
+                            var R = linReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${seriesName} (Linear Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }                        
+                                                
+                        }
+                        if (select2.selected().includes("exponential")) {
+                            
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0) && !(regressionData[z][1] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            }                           
+                            
+                            var expoReg = regression('exponential', temp);
+                            var fittedData = expoReg.points
+                            var R = expoReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${seriesName} (Exponential Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }   
+                            
+                        }
+                        if (select2.selected().includes("logarithmic")) { 
+
+                            // Remove x = 0 as logReg cannot accept x = 0                           
+
+
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            } 
+
+                            var logReg = regression('logarithmic', temp);  
+                            var fittedData = logReg.points
+                            var R = logReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${seriesName} (Logarithmic Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }                             
+                            
+                            
+                        }
+                        if (select2.selected().includes("power")) { 
+                            // Remove x and y = 0 as logReg cannot accept x = 0                            
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0) && !(regressionData[z][1] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            } 
+
+                                            
+                            
+                            var powReg = regression('power', temp);      
+                            var fittedData = powReg.points
+                            var R = powReg.r2.toFixed(4)   
+                                             
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${seriesName} (Power Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }  
+                            
+                           
+                        }
+                        if (select2.selected().includes("polynomial")) { 
+                            
+                            var polyReg = regression('polynomial', regressionData, power);      
+                            var fittedData = polyReg.points
+                            var R = polyReg.r2.toFixed(4)   
+                                             
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${seriesName} (Polynomial Regression Order ${power} R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }  
+                            
+                        }
+
+
+
+                        
+                    }
                         
                     
                     
                 })
+                
                 
                 
             } else { 
@@ -1005,38 +1221,242 @@ block content
 
                 // Prepare data array
                 
-                
-                for (var j = 0; j < rows.length; j++) { 
-                    for (var k = 0; k < selectedSeries.length; k++) { 
-                        // For every series, add it to the data
+                console.log(selectedSeries)
+                selectedSeries.forEach(series => { 
+                    // regression stuff
+                    var dataPresentCheck = false
+                    var regressionData = []
+                    for (var i = 0; i < rows.length; i++) { // for every series, add the data to the set
                         data.push([
-                            rows[j]["Date"],
-                            selectedSeries[k],
-                            rows[j][selectedSeries[k]]
-                        ])
-                        
+                            rows[i]["Date"],
+                            series,
+                            rows[i][series]
+                        ])   
+                        /* GRAPH OPTION: CALCULATING and ADDING Moving Average */
                         if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
-                            totalOfLast.push(rows[j][selectedSeries[k]])
+                            totalOfLast.push(rows[i][series])
                             if (totalOfLast.length >= lookBackTime) { 
                                 var movingAverage = (addArray(totalOfLast)) / lookBackTime
                                 data.push([
-                                    rows[j]["Date"],
-                                    `${selectedSeries[k]} (Moving Average - last ${lookBackTime} days)`,
+                                    rows[i]["Date"],
+                                    `${series} (Moving Average - last ${lookBackTime} days)`,
                                     movingAverage
                                 ])
                                 totalOfLast.shift()
+                            }    
+                        }  
+                        /* GRAPH OPTION: CALCULATING [x, y] for both top and bottom */
+                        // check if any of the regression data are selected
+                        if (regressionSelected) {                                     
+                            // construct data array
+                            /*[
+                                [x1, y1],
+                                [x2, y2]
+                            ]*/                                    
+                            dateIndex.push(rows[i]["Date"])
+                            // Ignore data if all values were ZERO
+
+                            if (Number(rows[i][series])) { dataPresentCheck = true } // if number != 0
+                            
+                            if (dataPresentCheck) { 
+                                regressionData.push([i, Number(rows[i][series])])
                             }
                             
+                        }
 
 
+                    }
+                    // Regression data is done, we can now plot the graph. We need to first, calculate the regression equation.
+                    if (regressionSelected) {                        
+                        
+                        if (select2.selected().includes("linear")) { 
+                            var linReg = regression('linear', regressionData)
+                            var fittedData = linReg.points
+                            var R = linReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${series} (Linear Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }                        
+                                                
+                        }
+                        if (select2.selected().includes("exponential")) {
+                            
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0) && !(regressionData[z][1] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            }                           
+                            
+                            var expoReg = regression('exponential', temp);
+                            var fittedData = expoReg.points
+                            var R = expoReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${series} (Exponential Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }   
+                            
+                        }
+                        if (select2.selected().includes("logarithmic")) { 
 
-                                                                    
+                            // Remove x = 0 as logReg cannot accept x = 0                           
+
+
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            } 
+
+                            var logReg = regression('logarithmic', temp);  
+                            var fittedData = logReg.points
+                            var R = logReg.r2.toFixed(4)                            
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${series} (Logarithmic Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }                             
+                            
+                            
+                        }
+                        if (select2.selected().includes("power")) { 
+                            // Remove x and y = 0 as logReg cannot accept x = 0                            
+                            var temp = []                        
+                            
+                            for (var z = 0; z < regressionData.length; z++) {                                
+                                if (!(regressionData[z][0] == 0) && !(regressionData[z][1] == 0)) {                                             
+                                    temp.push(regressionData[z])
+                                }
+                            } 
+
+                                            
+                            
+                            var powReg = regression('power', temp);      
+                            var fittedData = powReg.points
+                            var R = powReg.r2.toFixed(4)   
+                                             
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${series} (Power Regression R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }  
+                            
+                           
+                        }
+                        if (select2.selected().includes("polynomial")) { 
+                            
+                            var polyReg = regression('polynomial', regressionData, power);      
+                            var fittedData = polyReg.points
+                            var R = polyReg.r2.toFixed(4)   
+                                             
+                            for (var p = 0; p < fittedData.length; p++) {                                 
+                                data.push([
+                                    rows[fittedData[p][0]]["Date"],
+                                    `${series} (Polynomial Regression Order ${power} R² = ${R})`,
+                                    Number(fittedData[p][1])
+                                ])
+                            }  
+                            
                         }
                     }
+
+
+
+                })
+
+
+
+
+
+
+
+
+
+               
+                //- for (var j = 0; j < rows.length; j++) { 
+                //-     // Regression stuff
+                //-     var dataPresentCheck = false
+                //-     var regressionData = []
+
+                //-     for (var k = 0; k < selectedSeries.length; k++) { 
+                //-         // For every series, add it to the data
+                //-         data.push([
+                //-             rows[j]["Date"],
+                //-             selectedSeries[k],
+                //-             rows[j][selectedSeries[k]]
+                //-         ])
+                        
+                //-         /* GRAPH OPTION: CALCULATING and ADDING Moving Average */
+                //-         if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
+                //-             totalOfLast.push(rows[j][selectedSeries[k]])
+                //-             if (totalOfLast.length >= lookBackTime) { 
+                //-                 var movingAverage = (addArray(totalOfLast)) / lookBackTime
+                //-                 data.push([
+                //-                     rows[j]["Date"],
+                //-                     `${selectedSeries[k]} (Moving Average - last ${lookBackTime} days)`,
+                //-                     movingAverage
+                //-                 ])
+                //-                 totalOfLast.shift()
+                //-             }                                                                                                         
+                //-         }
+                //-         /* GRAPH OPTION: CALCULATING [x, y] for both top and bottom */
+                //-         // check if any of the regression data are selected
+                //-         if (regressionSelected) {                                     
+                //-             // construct data array
+                //-             /*[
+                //-                 [x1, y1],
+                //-                 [x2, y2]
+                //-             ]*/                                    
+                //-             dateIndex.push(rows[j]["Date"])
+                //-             // Ignore data if all values were ZERO
+
+                //-             if (Number(rows[j][selectedSeries[k]])) { dataPresentCheck = true } // if number != 0
+                //-             if (dataPresentCheck) { 
+                //-                 regressionData.push([j, Number(rows[j][selectedSeries[k]])])
+                //-             }
+                            
+                //-         }   
+
+                //-     }
                     
-                }
+                //-     if (regressionSelected) {                             
+                //-         var result;
+                //-         if (select2.selected().includes("linear")) { 
+                //-             var linReg = regression('linear', regressionData)
+                            
+                //-             for (var i = 0; i < regressionData.length; i++) { 
+                //-                 // given equation y = mx + c, calc y for each x //return result is [m,c]                                
+                //-                 var m = linReg.equation[0].toFixed(4)
+                //-                 var c = linReg.equation[1].toFixed(2)
+                //-                 var x = regressionData[i][0]                                
+                //-                 data.push([
+                //-                     rows[x]["Date"],
+                //-                     `${selectedSeries[k]} (Linear Regression)`,
+                //-                     Number(m) * x + Number(c)
+                //-                 ])                                
+                //-             }                               
+
+                //-         }
+                //-     //- if ()
+                //-     }   
+                //- }
+                
             }
 
+            /* ---------------------- GRAPH OPTIONS ---------------------- */
             // check if log selected
             var isLog = select2.selected().includes("log") ? "log" : ''
             var log = isLog.length ? true : false
@@ -1046,7 +1466,16 @@ block content
 
             // check if movAvg selected
             var movAvg = select2.selected().includes("moving-average") ? "true" : "false"
-
+            var linRegSel = select2.selected().includes("linear") ? "true" : "false"
+            var expoRegSel = select2.selected().includes("exponential") ? "true" : "false"
+            var logRegSel = select2.selected().includes("logarithmic") ? "true" : "false"
+            var powerRegSel = select2.selected().includes("power") ? "true" : "false"
+            var polyRegSel = select2.selected().includes("polynomial") ? "true" : "false"
+            var polyPowerSel = select2.selected().includes("polynomial") ? power : "false"
+            
+       
+            
+            /* ---------------------- GRAPH OPTIONS ---------------------- */
             var caption = "User Generated Chart"
             var dataStore = new FusionCharts.DataStore()
             var dataSource = { 
@@ -1078,7 +1507,7 @@ block content
             
             URLString = URLArray.join("l")
             document.getElementById("link-url").innerHTML = `https://sgcovidgraphs.xyz/create?type=${isAdv}&log=${log}&movAvg=${movAvg}?series=... <i class="far fa-copy" id='animate3'></i>`
-            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}`
+            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}&linReg=${linRegSel}&expoReg=${expoRegSel}&logReg=${logRegSel}&powReg=${powerRegSel}&polyReg=${polyRegSel}&polyRegPow=${polyPowerSel}`
             
             
 
@@ -1129,18 +1558,27 @@ block content
             }
 
             var arrOpts = []
-            if (params.log == "true") { 
-                
-                // is a LOG graph
-                
-                arrOpts.push("log")
-                           
+            if (params.log == "true") {                                      
+                arrOpts.push("log")                       
             }
             if (params.movAvg == "true") { 
                 arrOpts.push("moving-average")
             }
-
-
+            if (params.linReg == "true") { 
+                arrOpts.push("linear")
+            }
+            if (params.expoReg == "true") { 
+                arrOpts.push('exponential')
+            }
+            if (params.logReg == "true") { 
+                arrOpts.push('logarithmic')
+            }
+            if (params.powReg == "true") { 
+                arrOpts.push('power')
+            }
+            if (params.polyReg == "true") { 
+                arrOpts.push("polynomial")
+            }
             select2.set(arrOpts)
 
 

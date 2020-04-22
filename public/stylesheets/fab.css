@@ -128,6 +128,9 @@
       .container { 
           z-index: 11;
       }
+      .cover { 
+        display: block
+      }
       
 }
 
@@ -137,7 +140,7 @@
     width: 56px;
     height: 260px;
     right: 0px;
-    display: block;
+    display: none;
     margin: 1em;
     z-index: 12
 }

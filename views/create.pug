@@ -384,6 +384,7 @@ block content
                     option(value='logarithmic') Draw logarithmic regression line (y = a + bln(x))
                     option(value='power') Draw power regression line (y = ax^b)
                     option(value='polynomial' id='polynomial') Draw polynomial regression line 
+                    option(value='look-forward' id='look-forward') Extrapolate x days
                 .create-btn-ctn
                     .button-wrapper(onclick="clearOpts()")
                         a(class="styled") Clear graph options
@@ -464,6 +465,9 @@ block content
         // Moving average time selector
         var lookBackTime = 7
         var LBTinputted = false
+        // look forward
+        var lookForward = 0
+        var LFinputted = false
         var select = new SlimSelect({
             select: "#series-compare",
             
@@ -496,19 +500,20 @@ block content
                 var change = select2SelectedNew.filter(x => !select2SelectedOld.includes(x)).concat(select2SelectedOld.filter(x => !select2SelectedNew.includes(x)));
                 
                 if (change.includes("moving-average")) { 
-                    LBTinputted = false
-                    
+                    LBTinputted = false                    
                 }
                 if (change.includes("polynomial")) {
-                    powerInputted = false
-                    
+                    powerInputted = false                    
+                }
+                if (change.includes("look-forward")) { 
+                    LFinputted = false
                 }
                 select2SelectedOld = temp
 
                 
                 var promptAverage = false;
                 var promptPoly = false;
-                
+                var promptLF = false
                 select.forEach(selection => { 
                     if (selection.value == "moving-average" && !LBTinputted) { 
                         promptAverage = true
@@ -516,6 +521,9 @@ block content
                     }
                     if (selection.value == "polynomial" && !powerInputted) { 
                         promptPoly = true
+                    }
+                    if (selection.value == "look-forward" && !LFinputted) { 
+                        promptLF = true
                     }
 
                 })
@@ -562,6 +570,27 @@ block content
                             select2.set(select.splice(select.indexOf('power'), 1))
                         }
                     ).setHeader('Power polynomial')
+                }
+                if (promptLF) { 
+                    alertify.prompt("Enter the number of days to extrapolate. Enter a number from 1 to 500. <br />Note that you will need to select a regression line to extrapolate.", "7", 
+                        function(evt, value) { 
+                            if (isNaN(value) || value > 500 || value == 0) { 
+                                alertify.error(`Please only input a number from 1 to 500.`)   
+                                return false                             
+                            } else { 
+                                alertify.success(`Set to ${value} days.`)
+                                lookForward = value
+                                LFinputted = true
+                                
+                            }
+                            
+                        },
+                        function() { 
+                            alertify.error("Days to extrapolate not given. Days will not be extrapolated.")
+                            
+                            select2.set(select.splice(select.indexOf('look-forward'), 1))
+                        }
+                    ).setHeader('Data Extrapolation')
                 }
                 
                 
@@ -896,7 +925,13 @@ block content
         }
         
         
-
+        function formatDates(date) {   
+            var t = date.split(" ")
+            var a = t[2].split("")
+            var b = a[0] == 0 ? a[1] : a.join("")
+            var c = `${t[3].split("")[2]}${t[3].split("")[3]}`
+            return `${b}-${t[1]}-${c}`
+        }
 
         function generateChart(selectedSeries) {
             
@@ -1164,7 +1199,11 @@ block content
                     }
                     // Regression data is done, we can now plot the graph. We need to first, calculate the regression equation.
                     if (regressionSelected) {                      
-                        
+                        var lastDay = new Date(dateIndex[dateIndex.length-1])
+                        var newDates = []
+                        for (var d = 0; d <= lookForward; d++) { 
+                            newDates.push(formatDates(new Date(lastDay.setDate(lastDay.getDate()+1)).toDateString()))
+                        }
 
 
                         if (select2.selected().includes("linear")) { 
@@ -1178,7 +1217,18 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }                        
-                                                
+                            /* WIP - Formula (y = ax+b)*/                        
+                            
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(linReg.equation[0]) * (dateIndex.length+d-1) + Number(linReg.equation[1]) // .length is not zero-based
+                                    data.push([
+                                        newDates[d-1],
+                                        `${seriesName} (Linear Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }                    
                         }
                         if (select2.selected().includes("exponential")) {
                             
@@ -1200,7 +1250,18 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }   
-                            
+                            /* WIP - Formula (y=ae^bx) */
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(expoReg.equation[0]) * Math.exp((dateIndex.length+d-1)*Number(expoReg.equation[1]))                                   
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${seriesName} (Exponential Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }
                         }
                         if (select2.selected().includes("logarithmic")) { 
 
@@ -1225,7 +1286,18 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }                             
-                            
+                            /* WIP - Formula (y=a+bln(x)) */
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(logReg.equation[0]) + Number(logReg.equation[1])*(Math.log(dateIndex.length+d-1))                            
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${seriesName} (Logarithmic Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }
                             
                         }
                         if (select2.selected().includes("power")) { 
@@ -1251,7 +1323,17 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }  
-                            
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(powReg.equation[0]) * Math.pow(dateIndex.length+d-1, Number(powReg.equation[1]))                            
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${seriesName} (Power Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }  
                            
                         }
                         if (select2.selected().includes("polynomial")) { 
@@ -1267,7 +1349,23 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }  
-                            
+                            if (lookForward) {                             
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    // power = 4
+                                    var y = 0
+                                    var ns = polyReg.equation
+                                    for (var n = ns.length-1; n >= 0; n--) {
+                                         
+                                        y = Number(y)+(Number(polyReg.equation[n])*Math.pow((dateIndex.length+d-1),n))
+
+                                    }                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${seriesName} (Polynomial Regression Order ${power} R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }  
                         }
 
 
@@ -1356,9 +1454,14 @@ block content
                     }
                     // Regression data is done, we can now plot the graph. We need to first, calculate the regression equation.
                     if (regressionSelected) {                        
-                        
+                        var lastDay = new Date(dateIndex[dateIndex.length-1])
+                        var newDates = []
+                        for (var d = 0; d <= lookForward; d++) { 
+                            newDates.push(formatDates(new Date(lastDay.setDate(lastDay.getDate()+1)).toDateString()))
+                        }
                         if (select2.selected().includes("linear")) { 
                             var linReg = regression('linear', regressionData)
+                            
                             var fittedData = linReg.points
                             var R = linReg.r2.toFixed(4)                            
                             for (var p = 0; p < fittedData.length; p++) {                                 
@@ -1367,7 +1470,23 @@ block content
                                     `${series} (Linear Regression R² = ${R})`,
                                     Number(fittedData[p][1])
                                 ])
-                            }                        
+                            }   
+
+                            /* WIP - Formula (y = ax+b)*/                        
+                            
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(linReg.equation[0]) * (dateIndex.length+d-1) + Number(linReg.equation[1]) // .length is not zero-based
+                                    data.push([
+                                        newDates[d-1],
+                                        `${series} (Linear Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }
+                            
+
+                            
                                                 
                         }
                         if (select2.selected().includes("exponential")) {
@@ -1390,7 +1509,21 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }   
-                            
+
+                            /* WIP - Formula (y=ae^bx) */
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(expoReg.equation[0]) * Math.exp((dateIndex.length+d-1)*Number(expoReg.equation[1]))                                   
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${series} (Exponential Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }
+
+
                         }
                         if (select2.selected().includes("logarithmic")) { 
 
@@ -1414,7 +1547,19 @@ block content
                                     `${series} (Logarithmic Regression R² = ${R})`,
                                     Number(fittedData[p][1])
                                 ])
-                            }                             
+                            }    
+                            /* WIP - Formula (y=a+bln(x)) */
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(logReg.equation[0]) + Number(logReg.equation[1])*(Math.log(dateIndex.length+d-1))                            
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${series} (Logarithmic Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }                         
                             
                             
                         }
@@ -1441,6 +1586,17 @@ block content
                                     Number(fittedData[p][1])
                                 ])
                             }  
+                            if (lookForward) { 
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    var y = Number(powReg.equation[0]) * Math.pow(dateIndex.length+d-1, Number(powReg.equation[1]))                            
+                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${series} (Power Regression R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }  
                             
                            
                         }
@@ -1460,6 +1616,26 @@ block content
                                 ])
                             }  
                             
+                            if (lookForward) {                             
+                                for (var d = 1; d <= lookForward; d++) { 
+                                    // power = 4
+                                    var y = 0
+                                    var ns = polyReg.equation
+                                    for (var n = ns.length-1; n >= 0; n--) {
+                                         
+                                        y = Number(y)+(Number(polyReg.equation[n])*Math.pow((dateIndex.length+d-1),n))
+
+                                    }                                    
+                                    data.push([
+                                        newDates[d-1],
+                                        `${series} (Polynomial Regression Order ${power} R² = ${R})`,
+                                        y
+                                    ])
+                                }
+                            }  
+
+
+
                         }
                     }
 
@@ -1495,7 +1671,8 @@ block content
             var powerRegSel = select2.selected().includes("power") ? "true" : "false"
             var polyRegSel = select2.selected().includes("polynomial") ? "true" : "false"
             var polyPowerSel = select2.selected().includes("polynomial") ? power : "false"
-            
+            var extrapolate = select2.selected().includes("look-forward") ? "true" : "false";
+            var extrapolateLength = select2.selected().includes("look-forward") ? lookForward : "false"
        
 
             /* ---------------------- GRAPH OPTIONS ---------------------- */
@@ -1535,7 +1712,8 @@ block content
             
             URLString = URLArray.join("l")
             document.getElementById("link-url").innerHTML = `https://sgcovidgraphs.xyz/create?type=${isAdv}&log=${log}&movAvg=${movAvg}?series=... <i class="far fa-copy" id='animate3'></i>`
-            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}&movAvgLBT=${movAvgSel}&linReg=${linRegSel}&expoReg=${expoRegSel}&logReg=${logRegSel}&powReg=${powerRegSel}&polyReg=${polyRegSel}&polyRegPow=${polyPowerSel}`
+           
+            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}&movAvgLBT=${movAvgSel}&linReg=${linRegSel}&expoReg=${expoRegSel}&logReg=${logRegSel}&powReg=${powerRegSel}&polyReg=${polyRegSel}&polyRegPow=${polyPowerSel}&ext=${extrapolate}&extLen=${extrapolateLength}`
             
             
 
@@ -1623,6 +1801,17 @@ block content
 
                 }
             }
+            if (params.ext == "true") { 
+                arrOpts.push('look-forward')
+                if (params.extLen) { 
+                    if (isNaN(params.extLen) || params.extLen > 500 || params.extLen == 0) { 
+                        lookForward = 0
+                    } else { 
+                        lookForward = params.extLen
+                    }
+                }
+            }
+
             select2.set(arrOpts)
             
 
@@ -1631,5 +1820,5 @@ block content
 
         
 
-    script.
+    
         

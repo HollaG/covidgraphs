@@ -129,7 +129,7 @@
           z-index: 11;
       }
       .cover { 
-        display: block
+        display: block !important
       }
       
 }

@@ -39,4 +39,23 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+var curDate = new Date('24-Jan-20')
+console.log(curDate)
+var daysToAdd = 200
+
+var newDates = []
+function formatDates(date) {   
+  var t = date.split(" ")
+  var a = t[2].split("")
+  var b = a[0] == 0 ? a[1] : a.join("")
+  var c = `${t[3].split("")[2]}${t[3].split("")[3]}`
+  return `${b}-${t[1]}-${c}`
+}
+for (var i = 1; i <= daysToAdd; i++) { 
+  newDates.push(formatDates(new Date(curDate.setDate(curDate.getDate()+1)).toDateString()))  
+}
+console.log(newDates)
+
+
+
 module.exports = app;

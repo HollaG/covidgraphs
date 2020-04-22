@@ -6,10 +6,10 @@ block content
     script(src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js")
     script(type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.candy.js")
     
-    //- script(src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js")
-    //- link(rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css")
-
-    //- link(href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.25.0/slimselect.min.css" rel="stylesheet")
+    script(src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js")
+    link(rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css")
+    link(rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css")
+    
     .page-container
         .container
             .text
@@ -378,13 +378,16 @@ block content
                 select(id="graph-options" multiple)
                     option(data-placeholder="true")   
                     option(value="log") Enable logarithmic y-axis
-                    option(value="moving-average") Draw moving average lines (average of past 7 days)
+                    option(value="moving-average" id='moving-average') Draw moving average lines (average of past x days)
                     option(value='linear') Draw linear regression line (y = ax + b)
                     option(value='exponential') Draw exponential regression line (y = ae^(bx))
                     option(value='logarithmic') Draw logarithmic regression line (y = a + bln(x))
                     option(value='power') Draw power regression line (y = ax^b)
-                    option(value='polynomial') Draw polynomial regression line 
-                
+                    option(value='polynomial' id='polynomial') Draw polynomial regression line 
+                .create-btn-ctn
+                    .button-wrapper(onclick="clearOpts()")
+                        a(class="styled") Clear graph options
+                        i(class="fas fa-eraser")
             .axis-selector
                 h3 y-axis: Case Numbers
                 h3 x-axis: Time
@@ -414,19 +417,7 @@ block content
     
     script.
         
-        //- var regressionData = [[1,1],[2,2],[3,3]]
-        //- var linReg = regression('linear', regressionData);
-        //- var polyReg = regression('polynomial', regressionData, 2);
-        //- var expoReg = regression('exponential', regressionData);
-        //- var powReg = regression('power', regressionData);
-        //- var logReg = regression('logarithmic', regressionData);
         
-        //- var linRegEq = "Lin: y = " + linReg.equation[0].toFixed(4) + "x + " + linReg.equation[1].toFixed(2) + ", r2 = " + linReg.r2.toFixed(3);
-        //- var polyRegEq = "Poly: y = " + polyReg.equation[2].toFixed(4) + "x^2 + " + polyReg.equation[1].toFixed(4) + "x + " + polyReg.equation[0].toFixed(2) + ", r2 = " + polyReg.r2.toFixed(3);
-        //- var expoRegEq = "Exp: y = " + expoReg.equation[0].toFixed(4) + "e^(" + expoReg.equation[1].toFixed(4) + "x), r2 = " + expoReg.r2.toFixed(3);
-        //- var powRegEq = "Pow: y = " + powReg.equation[0].toFixed(4) + "x^" + powReg.equation[1].toFixed(2) + ", r2 = " + powReg.r2.toFixed(3);
-        //- var logRegEq = "Log: y = " + logReg.string + ", r2 = " + logReg.r2.toFixed(3);
-        //- var allEqs = "Trends: " + linRegEq + "; " + polyRegEq + "; " + expoRegEq + "; " + powRegEq + "; " + logRegEq;
 
         var charts = document.getElementsByClassName("chart")
         if(window.innerHeight > window.innerWidth){ // Portrait
@@ -467,8 +458,12 @@ block content
         function stopAnimation() { 
             animate.className = "fas fa-angle-left"
         }
-        
-        
+        // Regression Power Selector
+        var power = 4
+        var powerInputted = false
+        // Moving average time selector
+        var lookBackTime = 7
+        var LBTinputted = false
         var select = new SlimSelect({
             select: "#series-compare",
             
@@ -479,14 +474,99 @@ block content
             showContent: 'down'
             
         })
+        alertify.set('notifier','position', 'bottom-left');
+        var select2SelectedOld = []
+        var select2SelectedNew = []
         var select2 = new SlimSelect({
             select: "#graph-options",
             placeholder: 'Select options...',
             closeOnSelect: false,
             selectByGroup: true,
             searchFocus: false,
-            showContent: 'down'
-            
+            showContent: 'down',
+            beforeOnChange: (select) => { 
+                // alertify
+               
+
+
+
+                var temp = select.map(e => e.value)
+                
+                select2SelectedNew = temp;
+                var change = select2SelectedNew.filter(x => !select2SelectedOld.includes(x)).concat(select2SelectedOld.filter(x => !select2SelectedNew.includes(x)));
+                
+                if (change.includes("moving-average")) { 
+                    LBTinputted = false
+                    
+                }
+                if (change.includes("polynomial")) {
+                    powerInputted = false
+                    
+                }
+                select2SelectedOld = temp
+
+                
+                var promptAverage = false;
+                var promptPoly = false;
+                
+                select.forEach(selection => { 
+                    if (selection.value == "moving-average" && !LBTinputted) { 
+                        promptAverage = true
+                        
+                    }
+                    if (selection.value == "polynomial" && !powerInputted) { 
+                        promptPoly = true
+                    }
+
+                })
+                    
+                var cancelled = false;
+                if (promptAverage) { 
+                    alertify.prompt("Moving Average takes the last x days and calculates the average of them. <br />Enter the number of days (1 - 50) to calculate the average from.", "7", 
+                        function(evt, value) { 
+                            if (isNaN(value) || value > 50 || value == 0) { 
+                                alertify.error(`Please only input a number from 1 to 50.`)   
+                                return false                             
+                            } else { 
+                                alertify.success(`Set to ${value} days.`)
+                                lookBackTime = value
+                                LBTinputted = true
+                                
+                            }
+                            
+                        },
+                        function() { 
+                            alertify.error("Moving Average time not set; line will not be drawn")
+                            
+                            select2.set(select.splice(select.indexOf('moving-average'), 1))
+                        }
+                    ).setHeader('Moving Average')
+                }
+                if (promptPoly) { 
+                    alertify.prompt("Enter the maximum power (1 - 20) of the regression polynomial. ", "4", 
+                        function(evt, value) { 
+                            if (isNaN(value) || value > 20 || value == 0) { 
+                                alertify.error(`Please only input a number from 1 to 20.`) 
+                                return false                                   
+                            } else { 
+                                alertify.success(`Power set to ${value}.`)
+                                power = value
+                                powerInputted = true
+                               
+                            }
+                            
+                        },
+                        function() { 
+                            alertify.error("Power not set; line will not be drawn")
+                            
+                            select2.set(select.splice(select.indexOf('power'), 1))
+                        }
+                    ).setHeader('Power polynomial')
+                }
+                
+                
+
+            }
         })
         var series = !{stringify(series)}
 
@@ -517,6 +597,8 @@ block content
 
             /* Alert the copied text */
             document.getElementById('animate3').className = "far fa-clipboard"
+            alertify.success('Copied to clipboard!')
+
         }
         // User clicks on advanced options
         // - Action: Reveal advanced options       
@@ -566,6 +648,11 @@ block content
             advancedSelectOperation6.set([])
             advancedSelectBottom6.set([])       
             select.set([])
+        }
+        function clearOpts() { 
+            select2.set([])
+            LBTinputted = false
+            powerInputted = false
         }        
         var commonSelectOpts = { 
             searchPlaceholder: 'Search, or enter a number to perform operations on',
@@ -790,7 +877,7 @@ block content
                 darkMode = true;
                 theme = "candy"
                 if (!(Object.keys(obj).length === 0 && obj.constructor === Object)) {                    
-                    FusionCharts.items["chartobject-1"].setChartAttribute("theme", "candy")
+                    FusionCharts.items[Object.keys(FusionCharts.items)[0]].setChartAttribute("theme", "candy")
                 }              
                 // set cookie
                 document.cookie = "dark_mode = true"
@@ -799,7 +886,7 @@ block content
                 darkMode = false
                 theme = "fusion"
                 if (!(Object.keys(obj).length === 0 && obj.constructor === Object)) {
-                    FusionCharts.items["chartobject-1"].setChartAttribute("theme", "fusion") 
+                    FusionCharts.items[Object.keys(FusionCharts.items)[0]].setChartAttribute("theme", "fusion") 
                 }
                                
                 // set cookie
@@ -808,9 +895,7 @@ block content
             }
         }
         
-        // Regression Power Selector
-        var power = 4;
-
+        
 
 
         function generateChart(selectedSeries) {
@@ -826,7 +911,7 @@ block content
 
             // This code is for moving average calculating
             var totalOfLast = []
-            var lookBackTime = 7
+            
             // End
 
             // This code is for regression
@@ -1171,7 +1256,7 @@ block content
                         }
                         if (select2.selected().includes("polynomial")) { 
                             
-                            var polyReg = regression('polynomial', regressionData, power);      
+                            var polyReg = regression('polynomial', regressionData, Number(power));      
                             var fittedData = polyReg.points
                             var R = polyReg.r2.toFixed(4)   
                                              
@@ -1207,11 +1292,14 @@ block content
                 
                 // Get selected series names
                 var selectedSeries = selectedSeries || select.selected() // ["New local dormitory cases (per day)", "New local work permit holder cases (per day)", "New local community cases (per day)", "New local cases (per day)"]
-                if (!selectedSeries.length) return
+                if (!selectedSeries.length) {
+                    alertify.error("Please select a series to plot!")
+                    return
+                }
 
                 var series = []
-                if (chart) chart.dispose()
-
+                //- if (chart) chart.dispose()
+                
                 for (var i = 0; i < selectedSeries.length; i++) { 
                     URLArray.push(index.indexOf(selectedSeries[i]))
                 }
@@ -1221,7 +1309,7 @@ block content
 
                 // Prepare data array
                 
-                console.log(selectedSeries)
+                
                 selectedSeries.forEach(series => { 
                     // regression stuff
                     var dataPresentCheck = false
@@ -1357,8 +1445,10 @@ block content
                            
                         }
                         if (select2.selected().includes("polynomial")) { 
+                           
                             
-                            var polyReg = regression('polynomial', regressionData, power);      
+                            var polyReg = regression('polynomial', regressionData, Number(power));      
+                            
                             var fittedData = polyReg.points
                             var R = polyReg.r2.toFixed(4)   
                                              
@@ -1385,74 +1475,6 @@ block content
 
 
 
-               
-                //- for (var j = 0; j < rows.length; j++) { 
-                //-     // Regression stuff
-                //-     var dataPresentCheck = false
-                //-     var regressionData = []
-
-                //-     for (var k = 0; k < selectedSeries.length; k++) { 
-                //-         // For every series, add it to the data
-                //-         data.push([
-                //-             rows[j]["Date"],
-                //-             selectedSeries[k],
-                //-             rows[j][selectedSeries[k]]
-                //-         ])
-                        
-                //-         /* GRAPH OPTION: CALCULATING and ADDING Moving Average */
-                //-         if (select2.selected().includes("moving-average")) { // MOVING AVERAGE  
-                //-             totalOfLast.push(rows[j][selectedSeries[k]])
-                //-             if (totalOfLast.length >= lookBackTime) { 
-                //-                 var movingAverage = (addArray(totalOfLast)) / lookBackTime
-                //-                 data.push([
-                //-                     rows[j]["Date"],
-                //-                     `${selectedSeries[k]} (Moving Average - last ${lookBackTime} days)`,
-                //-                     movingAverage
-                //-                 ])
-                //-                 totalOfLast.shift()
-                //-             }                                                                                                         
-                //-         }
-                //-         /* GRAPH OPTION: CALCULATING [x, y] for both top and bottom */
-                //-         // check if any of the regression data are selected
-                //-         if (regressionSelected) {                                     
-                //-             // construct data array
-                //-             /*[
-                //-                 [x1, y1],
-                //-                 [x2, y2]
-                //-             ]*/                                    
-                //-             dateIndex.push(rows[j]["Date"])
-                //-             // Ignore data if all values were ZERO
-
-                //-             if (Number(rows[j][selectedSeries[k]])) { dataPresentCheck = true } // if number != 0
-                //-             if (dataPresentCheck) { 
-                //-                 regressionData.push([j, Number(rows[j][selectedSeries[k]])])
-                //-             }
-                            
-                //-         }   
-
-                //-     }
-                    
-                //-     if (regressionSelected) {                             
-                //-         var result;
-                //-         if (select2.selected().includes("linear")) { 
-                //-             var linReg = regression('linear', regressionData)
-                            
-                //-             for (var i = 0; i < regressionData.length; i++) { 
-                //-                 // given equation y = mx + c, calc y for each x //return result is [m,c]                                
-                //-                 var m = linReg.equation[0].toFixed(4)
-                //-                 var c = linReg.equation[1].toFixed(2)
-                //-                 var x = regressionData[i][0]                                
-                //-                 data.push([
-                //-                     rows[x]["Date"],
-                //-                     `${selectedSeries[k]} (Linear Regression)`,
-                //-                     Number(m) * x + Number(c)
-                //-                 ])                                
-                //-             }                               
-
-                //-         }
-                //-     //- if ()
-                //-     }   
-                //- }
                 
             }
 
@@ -1466,6 +1488,7 @@ block content
 
             // check if movAvg selected
             var movAvg = select2.selected().includes("moving-average") ? "true" : "false"
+            var movAvgSel = select2.selected().includes("moving-average") ? lookBackTime : "false"
             var linRegSel = select2.selected().includes("linear") ? "true" : "false"
             var expoRegSel = select2.selected().includes("exponential") ? "true" : "false"
             var logRegSel = select2.selected().includes("logarithmic") ? "true" : "false"
@@ -1474,6 +1497,11 @@ block content
             var polyPowerSel = select2.selected().includes("polynomial") ? power : "false"
             
        
+
+            /* ---------------------- GRAPH OPTIONS ---------------------- */
+            if (!(Object.keys(FusionCharts.items).length === 0 && FusionCharts.items.constructor === Object)) { 
+                FusionCharts.items[Object.keys(FusionCharts.items)[0]].dispose()
+            }
             
             /* ---------------------- GRAPH OPTIONS ---------------------- */
             var caption = "User Generated Chart"
@@ -1507,7 +1535,7 @@ block content
             
             URLString = URLArray.join("l")
             document.getElementById("link-url").innerHTML = `https://sgcovidgraphs.xyz/create?type=${isAdv}&log=${log}&movAvg=${movAvg}?series=... <i class="far fa-copy" id='animate3'></i>`
-            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}&linReg=${linRegSel}&expoReg=${expoRegSel}&logReg=${logRegSel}&powReg=${powerRegSel}&polyReg=${polyRegSel}&polyRegPow=${polyPowerSel}`
+            document.getElementById("link-url-copy").value = `https://sgcovidgraphs.xyz/create?type=${isAdv}&series=${URLString}&log=${log}&movAvg=${movAvg}&movAvgLBT=${movAvgSel}&linReg=${linRegSel}&expoReg=${expoRegSel}&logReg=${logRegSel}&powReg=${powerRegSel}&polyReg=${polyRegSel}&polyRegPow=${polyPowerSel}`
             
             
 
@@ -1563,6 +1591,14 @@ block content
             }
             if (params.movAvg == "true") { 
                 arrOpts.push("moving-average")
+                if (params.movAvgLBT) { 
+                    if (isNaN(params.movAvgLBT) || params.movAvgLBT > 50 || params.movAvgLBT == 0) {
+                        lookBackTime = 7
+                    } else { 
+                        lookBackTime = params.movAvgLBT
+                    }
+                    
+                }
             }
             if (params.linReg == "true") { 
                 arrOpts.push("linear")
@@ -1578,9 +1614,17 @@ block content
             }
             if (params.polyReg == "true") { 
                 arrOpts.push("polynomial")
+                if (params.polyRegPow) {                    
+                    if (isNaN(params.polyRegPow) || params.polyRegPow > 50 || params.polyRegPow == 0) {
+                        power = 4
+                    } else { 
+                        power = params.polyRegPow
+                    }
+
+                }
             }
             select2.set(arrOpts)
-
+            
 
             generateChart()
         }

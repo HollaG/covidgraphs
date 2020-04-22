@@ -26,6 +26,18 @@
     
 }
 
+.alertify .ajs-footer .ajs-buttons .ajs-button.ajs-ok { 
+    color: #5896fa
+}
+
+.ajs-message { 
+    
+    
+    border-radius: 4px !important;
+    text-shadow: none !important;
+}
+
+
 @media screen and (max-width: 700px) {
     .advanced-series { 
         width: 46% !important;
@@ -33,10 +45,20 @@
         margin-right: 5px !important;
         margin-left: 5px !important;
     }
+    .alertify .ajs-commands button.ajs-close { 
+       
+        font-size: 13px !important;
+    }
+    .alertify .ajs-footer .ajs-buttons.ajs-primary .ajs-button { 
+        font-size: 13px !important
+    }
  }
 
 
 @media screen and (max-width: 1000px) {
+    .alertify .ajs-commands button.ajs-close { 
+        background-position: right 30% !important;
+    }
     .chart { 
         height: 55vw;
         min-height: 400px;

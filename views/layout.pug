@@ -1,10 +1,9 @@
 doctype html
-html
+html(lang="en")
   head
 
     title COVID-19 Visualised
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    //- link(rel="stylesheet" href="/stylesheets/mui.min.css")
+    link(rel='stylesheet', href='/stylesheets/style.css')    
     link(rel="stylesheet" href="https://cdn.muicss.com/mui-0.10.1/css/mui.min.css")
     link(rel="stylesheet" href="/stylesheets/color.css")
     link(href="/stylesheets/dark.css" rel="stylesheet")
@@ -20,10 +19,14 @@ html
     
     script(src="/javascripts/font-awesome.js")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="description" content="COVID-19 (Singapore) in pictures")
+    meta(name="author" content="Marcus Soh")
+    meta(name="keywords" content="covid, singapore, graphs")
+    meta(name="theme-color" content="#262a33")
   body
     .dark-changer
       .button-wrapper.center(id="dark-mode" onclick="toggleDarkMode()")
-        a(class="styled" id="dark-mode-text") Enable dark mode
+        a(class="styled" id="dark-mode-text") Disable dark mode
     .cover
     nav.container
       a.buttons(onclick="toggleDarkMode()")
@@ -36,7 +39,8 @@ html
       
     block content
     .footer
-      p Data supplied by <a href="https://www.moh.gov.sg/covid-19/situation-report"> MOH </a>
-      p Icons supplied by <a href="https://fontawesome.com/license"> Font Awesome </a>
-      a(href="https://docs.google.com/spreadsheets/d/1RgZxXk-oD8xLlFRx3hcmiLaQpFoJJX6CfN0iI-Bc9H8/edit?usp=sharing") COVID-19 Google Sheet
+      p Data supplied by <a href="https://www.moh.gov.sg/covid-19/situation-report" target="_blank"> MOH </a>
+      p Icons supplied by <a href="https://fontawesome.com/license" target="_blank"> Font Awesome </a>
+      a(href="https://docs.google.com/spreadsheets/d/1RgZxXk-oD8xLlFRx3hcmiLaQpFoJJX6CfN0iI-Bc9H8/edit?usp=sharing" target="_blank") COVID-19 Google Sheet
       p Marcus Soh 2020
+  

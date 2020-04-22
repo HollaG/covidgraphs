@@ -121,3 +121,28 @@
     
 }
 
+/* Alertify */
+.dark .alertify .ajs-header { 
+    background: #2d323d !important;
+    color: white !important;
+    border-color: #2d323d !important;
+} 
+.dark .ajs-dialog, .dark .ajs-footer { 
+    background: #474f60 !important;
+    border-color: #474f60 !important
+}
+
+.dark .ajs-input { 
+    background-color: #5b667d !important;
+    border-color: #5b667d !important;
+    color: white !important
+}
+.dark .ajs-cancel { 
+    color: white !important
+}
+.dark .ajs-message { 
+    color: white !important ;
+    border-color: #262a33 !important;
+    border-radius: 4px !important;
+    text-shadow: none !important;
+}

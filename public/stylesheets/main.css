@@ -36,7 +36,8 @@
     .chart { 
         
         min-height: 400px;
-        width: 90%
+        width: 90%;
+        margin: 0;
     }
     #table1 { 
         width: 95%;

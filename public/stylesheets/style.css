@@ -33,7 +33,10 @@ body, html {
     height: auto;
     border-radius: 0 0 4px 4px;
   }
-
+  .disclaimer { 
+    margin-bottom: 80px;
+  }
+  
 }
 
 .selector { 

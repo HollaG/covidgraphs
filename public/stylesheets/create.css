@@ -62,7 +62,8 @@
     .chart { 
         height: 55vw;
         min-height: 400px;
-        max-width: 95%
+        max-width: 90%;
+        margin: 0
     }   
     button { 
         height: 40px !important;

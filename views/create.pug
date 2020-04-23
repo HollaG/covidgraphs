@@ -491,26 +491,6 @@ block content
             beforeOnChange: (select) => { 
                 // alertify
                
-
-
-
-                var temp = select.map(e => e.value)
-                
-                select2SelectedNew = temp;
-                var change = select2SelectedNew.filter(x => !select2SelectedOld.includes(x)).concat(select2SelectedOld.filter(x => !select2SelectedNew.includes(x)));
-                
-                if (change.includes("moving-average")) { 
-                    LBTinputted = false                    
-                }
-                if (change.includes("polynomial")) {
-                    powerInputted = false                    
-                }
-                if (change.includes("look-forward")) { 
-                    LFinputted = false
-                }
-                select2SelectedOld = temp
-
-                
                 var promptAverage = false;
                 var promptPoly = false;
                 var promptLF = false
@@ -527,6 +507,27 @@ block content
                     }
 
                 })
+
+
+                var temp = select.map(e => e.value)
+                
+                select2SelectedNew = temp;
+                var change = select2SelectedNew.filter(x => !select2SelectedOld.includes(x)).concat(select2SelectedOld.filter(x => !select2SelectedNew.includes(x)));
+                
+                if (change.includes("moving-average")) { 
+                    LBTinputted = false   
+                                     
+                }
+                if (change.includes("polynomial")) {
+                    powerInputted = false                    
+                }
+                if (change.includes("look-forward")) { 
+                    LFinputted = false
+                }
+                select2SelectedOld = temp
+
+                
+                
                     
                 var cancelled = false;
                 if (promptAverage) { 
@@ -545,8 +546,8 @@ block content
                         },
                         function() { 
                             alertify.error("Moving Average time not set; line will not be drawn")
-                            
-                            select2.set(select.splice(select.indexOf('moving-average'), 1))
+                            var optsToKeep = select.map(e => {if (e.value != 'moving-average') return e.value})                          
+                            select2.set(optsToKeep)
                         }
                     ).setHeader('Moving Average')
                 }
@@ -567,7 +568,8 @@ block content
                         function() { 
                             alertify.error("Power not set; line will not be drawn")
                             
-                            select2.set(select.splice(select.indexOf('power'), 1))
+                            var optsToKeep = select.map(e => {if (e.value != 'power') return e.value})                          
+                            select2.set(optsToKeep)
                         }
                     ).setHeader('Power polynomial')
                 }
@@ -588,7 +590,8 @@ block content
                         function() { 
                             alertify.error("Days to extrapolate not given. Days will not be extrapolated.")
                             
-                            select2.set(select.splice(select.indexOf('look-forward'), 1))
+                            var optsToKeep = select.map(e => {if (e.value != 'look-forward') return e.value})                          
+                            select2.set(optsToKeep)
                         }
                     ).setHeader('Data Extrapolation')
                 }
@@ -1017,7 +1020,7 @@ block content
                    
 
                     var topSelection = group[0].selected()
-                    var operatorSelection = group[1].selected() || "add"
+                    var operatorSelection = group[1].selected() || "-1"
                     var bottomSelection = group[2].selected() || "none"
 
                     URLArray.push(index.indexOf(topSelection), operatorIndex[operatorSelection], index.indexOf(bottomSelection)) 
